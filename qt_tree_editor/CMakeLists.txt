@@ -6,9 +6,8 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   std_msgs
+  rosconsole_bridge
 )
-
-find_package(console_bridge)
 
 find_package(Qt5 REQUIRED COMPONENTS
   Core
