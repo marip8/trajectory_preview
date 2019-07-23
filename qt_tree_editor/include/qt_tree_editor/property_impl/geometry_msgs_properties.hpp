@@ -1,6 +1,7 @@
 #ifndef QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
 
+#include "qt_tree_editor/property_impl/stl_properties.hpp"
 #include "qt_tree_editor/property_impl/std_msgs_properties.hpp"
 #include <geometry_msgs/PoseArray.h>
 
@@ -142,38 +143,24 @@ struct Property<geometry_msgs::PoseArray>
 
     // Add the child properties
     Property<std_msgs::Header>::encode(msg.header, "header", pose_array_item);
-
-    if(!msg.poses.empty())
-    {
-      for(std::size_t i = 0; i < msg.poses.size(); ++i)
-      {
-        QString name = QString::fromStdString("pose[" + std::to_string(i) + "]");
-        Property<geometry_msgs::Pose>::encode(msg.poses[i], name, pose_array_item);
-      }
-    }
+    Property<std::vector<geometry_msgs::Pose>>::encode(msg.poses, "poses", pose_array_item);
   }
 
   static bool decode(const Component* item,
                      geometry_msgs::PoseArray& msg)
   {
     bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
+    bool poses = Property<std::vector<geometry_msgs::Pose>>::decode(static_cast<Component*>(item->child(1)), msg.poses);
+    bool success = poses && header;
 
-    msg.poses.clear();
-    msg.poses.resize(item->rowCount() - 1);
-    bool pose = true;
-    for(std::size_t i = 0; i < msg.poses.size(); ++i)
-    {
-      pose &= Property<geometry_msgs::Pose>::decode(static_cast<Component*>(item->child(i + 1)), msg.poses[i]);
-    }
-
-    if(!pose || !header)
+    if(!success)
     {
       std::stringstream ss;
       ss << "Failed to decode" << ros::message_traits::datatype(msg);
       CONSOLE_BRIDGE_logError(ss.str().c_str());
     }
 
-    return pose && header;
+    return success;
   }
 };
 
