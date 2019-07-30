@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QStandardItem>
-#include "qt_tree_editor/component.h"
+#include "qt_tree_editor/component/component.h"
 
 inline QList<QStandardItem*> createPair(const QString& name,
                                         const QString& datatype)

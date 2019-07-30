@@ -42,7 +42,7 @@ qt5_wrap_ui(${PROJECT_NAME}_MOC_UI
 )
 
 set(${PROJECT_NAME}_HEADERS
-  include/${PROJECT_NAME}/component_delegate.h
+  include/${PROJECT_NAME}/component/component_delegate.h
 )
 
 qt5_wrap_cpp(${PROJECT_NAME}_MOC_HEADERS
@@ -50,8 +50,8 @@ qt5_wrap_cpp(${PROJECT_NAME}_MOC_HEADERS
 )
 
 add_library(${PROJECT_NAME}
+  src/component.cpp
   src/component_delegate.cpp
-  src/property.cpp
   ${${PROJECT_NAME}_MOC_HEADERS}
   ${${PROJECT_NAME}_MOC_UI}
 )

@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "qt_tree_editor/tree_editor.hpp"
-#include "qt_tree_editor/property_impl/geometry_msgs_properties.hpp"
+#include "qt_tree_editor/property/impl/geometry_msgs_properties.hpp"
 #include <console_bridge/console.h>
 
 int main(int argc, char** argv)

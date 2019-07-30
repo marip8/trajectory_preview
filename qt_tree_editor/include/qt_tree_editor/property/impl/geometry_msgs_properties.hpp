@@ -1,8 +1,8 @@
 #ifndef QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor/property_impl/stl_properties.hpp"
-#include "qt_tree_editor/property_impl/std_msgs_properties.hpp"
+#include "qt_tree_editor/property/impl/stl_properties.hpp"
+#include "qt_tree_editor/property/impl/std_msgs_properties.hpp"
 #include <geometry_msgs/PoseArray.h>
 
 template<>

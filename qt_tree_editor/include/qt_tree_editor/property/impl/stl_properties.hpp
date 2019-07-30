@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
 #define QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
 
-#include "qt_tree_editor/property.h"
+#include "qt_tree_editor/property/property.h"
 #include <console_bridge/console.h>
 #include <sstream>
 #include <vector>

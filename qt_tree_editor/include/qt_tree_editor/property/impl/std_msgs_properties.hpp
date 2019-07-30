@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_STD_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_STD_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor/property.h"
+#include "qt_tree_editor/property/property.h"
 #include <std_msgs/Header.h>
 #include <console_bridge/console.h>
 

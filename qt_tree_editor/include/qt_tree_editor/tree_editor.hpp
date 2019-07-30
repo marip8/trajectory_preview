@@ -1,8 +1,8 @@
 #ifndef QT_TREE_EDITOR_TREE_EDITOR_HPP
 #define QT_TREE_EDITOR_TREE_EDITOR_HPP
 
-#include "qt_tree_editor/component_delegate.h"
-#include "qt_tree_editor/property.h"
+#include "qt_tree_editor/component/component_delegate.h"
+#include "qt_tree_editor/property/property.h"
 #include "qt_tree_editor/tree_editor.h"
 #include "ui_tree_editor.h"
 #include <QWidget>

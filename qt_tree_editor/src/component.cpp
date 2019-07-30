@@ -1,4 +1,4 @@
-#include "qt_tree_editor/component.h"
+#include "qt_tree_editor/component/component.h"
 
 Component::Component()
   : QStandardItem()

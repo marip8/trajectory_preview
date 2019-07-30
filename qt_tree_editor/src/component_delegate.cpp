@@ -1,4 +1,4 @@
-#include "qt_tree_editor/component_delegate.h"
+#include "qt_tree_editor/component/component_delegate.h"
 #include <QComboBox>
 #include <ros/console.h>
 
