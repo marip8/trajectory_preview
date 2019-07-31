@@ -5,12 +5,13 @@
 #include <QStandardItem>
 #include "qt_tree_editor/component/component.h"
 
+template<typename ComponentType>
 inline QList<QStandardItem*> createPair(const QString& name,
                                         const QString& datatype)
 {
   QList<QStandardItem*> list;
-  list << new Component(name)
-       << new Component(datatype);
+  list << new ComponentType(name)
+       << new ComponentType(datatype);
 
   list[0]->setEditable(false);
   list[1]->setEditable(false);
@@ -21,6 +22,7 @@ inline QList<QStandardItem*> createPair(const QString& name,
 template<typename T>
 struct Property
 {
+  template<typename ComponentT>
   static void encode(const T& msg,
                      const QString& name,
                      QStandardItem* parent);
