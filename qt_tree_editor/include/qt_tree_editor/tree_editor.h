@@ -29,6 +29,8 @@ private:
 
   void setupUi(QWidget* parent);
 
+  void onCustomContextMenu(const QPoint& point);
+
   QVBoxLayout* vertical_layout_;
   QTreeView* component_view_;
   QTreeView* property_view_;

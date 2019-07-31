@@ -76,6 +76,7 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
   property_view_->setItemDelegate(new ComponentDelegate());
 
   QApplication::connect(component_view_, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
+  QApplication::connect(component_view_, &QTreeView::customContextMenuRequested, std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
 
   return widget_;
 }
@@ -104,6 +105,23 @@ template<typename T>
 bool TreeEditor<T>::get(T& msg)
 {
   return Property<T>::decode(static_cast<Component*>(model_->item(0, 0)), msg);
+}
+
+template<typename T>
+void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
+{
+  QModelIndex index = component_view_->indexAt(point);
+  if(index.isValid())
+  {
+    const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
+    Component* item = static_cast<Component*>(model->itemFromIndex(index));
+    QMenu* menu = item->getContextMenu(index);
+    if(menu)
+    {
+      menu->exec(component_view_->viewport()->mapToGlobal(point));
+    }
+    delete menu;
+  }
 }
 
 #endif // QT_TREE_EDITOR_TREE_EDITOR_HPP
