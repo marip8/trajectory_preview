@@ -37,14 +37,6 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-set(${PROJECT_NAME}_UIS
-  ui/tree_editor.ui
-)
-
-qt5_wrap_ui(${PROJECT_NAME}_MOC_UI
-  ${${PROJECT_NAME}_UIS}
-)
-
 set(${PROJECT_NAME}_HEADERS
   include/${PROJECT_NAME}/component/component_delegate.h
 )
@@ -58,7 +50,6 @@ add_library(${PROJECT_NAME}
   src/vector_child_component.cpp
   src/component_delegate.cpp
   ${${PROJECT_NAME}_MOC_HEADERS}
-  ${${PROJECT_NAME}_MOC_UI}
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
