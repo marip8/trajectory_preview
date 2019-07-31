@@ -3,18 +3,19 @@
 
 #include "qt_tree_editor/property/property.h"
 #include <std_msgs/Header.h>
-#include <console_bridge/console.h>
+#include <ros/console.h>
 
 template<>
 struct Property<std_msgs::Header>
 {
+  template<typename ComponentT>
   static void encode(const std_msgs::Header& msg,
                      const QString& name,
                      QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
-    parent->appendRow(createPair(name, datatype));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
 
     Component* header_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
@@ -37,9 +38,7 @@ struct Property<std_msgs::Header>
       return seq;
     }
 
-    std::stringstream ss;
-    ss << "Failed to decode" << ros::message_traits::datatype(msg);
-    CONSOLE_BRIDGE_logError(ss.str().c_str());
+    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
 
     return false;
   }

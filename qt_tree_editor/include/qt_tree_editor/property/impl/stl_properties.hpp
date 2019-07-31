@@ -2,7 +2,9 @@
 #define QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
 
 #include "qt_tree_editor/property/property.h"
-#include <console_bridge/console.h>
+#include "qt_tree_editor/component/impl/vector_component.hpp"
+#include "qt_tree_editor/component/vector_child_component.h"
+#include <ros/console.h>
 #include <sstream>
 #include <vector>
 
@@ -15,7 +17,8 @@ struct Property<std::vector<T>>
   {
     // Add the top-level item
     QString datatype("vector");
-    parent->appendRow(createPair(name, datatype));
+    using VectorT = std::vector<T>;
+    parent->appendRow(createPair<VectorComponent<VectorT>>(name, datatype));
 
     Component* item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
@@ -25,7 +28,7 @@ struct Property<std::vector<T>>
       for(std::size_t i = 0; i < vec.size(); ++i)
       {
         QString name = QString::fromStdString("[" + std::to_string(i) + "]");
-        Property<T>::encode(vec[i], name, item);
+        Property<T>::template encode<VectorChildComponent>(vec[i], name, item);
       }
     }
   }
@@ -33,19 +36,21 @@ struct Property<std::vector<T>>
   static bool decode(const Component* item,
                      std::vector<T>& vec)
   {
-    vec.clear();
-    vec.resize(item->rowCount() - 1);
     bool success = true;
-    for(std::size_t i = 0; i < vec.size(); ++i)
-    {
-      success &= Property<T>::decode(static_cast<Component*>(item->child(i + 1)), vec[i]);
-    }
 
-    if(!success)
+    vec.clear();
+    if(item->rowCount() > 0)
     {
-      std::stringstream ss;
-      ss << "Failed to decode vector";
-      CONSOLE_BRIDGE_logError(ss.str().c_str());
+      vec.resize(item->rowCount());
+      for(std::size_t i = 0; i < vec.size(); ++i)
+      {
+        success &= Property<T>::decode(static_cast<Component*>(item->child(i)), vec[i]);
+      }
+
+      if(!success)
+      {
+        ROS_ERROR_STREAM("Failed to decode vector");
+      }
     }
 
     return success;

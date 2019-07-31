@@ -8,13 +8,14 @@
 template<>
 struct Property<geometry_msgs::Quaternion>
 {
+  template<typename ComponentT>
   static void encode(const geometry_msgs::Quaternion& msg,
                      const QString& name,
                      QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
-    parent->appendRow(createPair(name, datatype));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
 
     Component* q_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
@@ -41,9 +42,7 @@ struct Property<geometry_msgs::Quaternion>
       return w && x && y && z;
     }
 
-    std::stringstream ss;
-    ss << "Failed to decode" << ros::message_traits::datatype(msg);
-    CONSOLE_BRIDGE_logError(ss.str().c_str());
+    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
 
     return false;
   }
@@ -52,13 +51,14 @@ struct Property<geometry_msgs::Quaternion>
 template<>
 struct Property<geometry_msgs::Point>
 {
+  template<typename ComponentT>
   static void encode(const geometry_msgs::Point& msg,
                      const QString& name,
                      QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
-    parent->appendRow(createPair(name, datatype));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
 
     Component* q_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
@@ -83,9 +83,7 @@ struct Property<geometry_msgs::Point>
       return x && y && z;
     }
 
-    std::stringstream ss;
-    ss << "Failed to decode" << ros::message_traits::datatype(msg);
-    CONSOLE_BRIDGE_logError(ss.str().c_str());
+    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
 
     return false;
   }
@@ -94,19 +92,20 @@ struct Property<geometry_msgs::Point>
 template<>
 struct Property<geometry_msgs::Pose>
 {
+  template<typename ComponentT>
   static void encode(const geometry_msgs::Pose& msg,
                      const QString& name,
                      QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
-    parent->appendRow(createPair(name, datatype));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
 
     Component* pose_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
     // Add the child properties
-    Property<geometry_msgs::Point>::encode(msg.position, "position", pose_item);
-    Property<geometry_msgs::Quaternion>::encode(msg.orientation, "orientation", pose_item);
+    Property<geometry_msgs::Point>::encode<Component>(msg.position, "position", pose_item);
+    Property<geometry_msgs::Quaternion>::encode<Component>(msg.orientation, "orientation", pose_item);
   }
 
   static bool decode(const Component* item,
@@ -120,9 +119,7 @@ struct Property<geometry_msgs::Pose>
       return point && quat;
     }
 
-    std::stringstream ss;
-    ss << "Failed to decode" << ros::message_traits::datatype(msg);
-    CONSOLE_BRIDGE_logError(ss.str().c_str());
+    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
 
     return false;
   }
@@ -131,18 +128,19 @@ struct Property<geometry_msgs::Pose>
 template<>
 struct Property<geometry_msgs::PoseArray>
 {
+  template<typename ComponentT>
   static void encode(const geometry_msgs::PoseArray& msg,
                      const QString& name,
                      QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
-    parent->appendRow(createPair(name, datatype));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
 
     Component* pose_array_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
     // Add the child properties
-    Property<std_msgs::Header>::encode(msg.header, "header", pose_array_item);
+    Property<std_msgs::Header>::encode<Component>(msg.header, "header", pose_array_item);
     Property<std::vector<geometry_msgs::Pose>>::encode(msg.poses, "poses", pose_array_item);
   }
 
@@ -155,9 +153,7 @@ struct Property<geometry_msgs::PoseArray>
 
     if(!success)
     {
-      std::stringstream ss;
-      ss << "Failed to decode" << ros::message_traits::datatype(msg);
-      CONSOLE_BRIDGE_logError(ss.str().c_str());
+      ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
     }
 
     return success;
