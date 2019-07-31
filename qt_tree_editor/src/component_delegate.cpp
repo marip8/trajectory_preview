@@ -29,20 +29,15 @@ QWidget* ComponentDelegate::createEditor(QWidget* parent,
 void ComponentDelegate::setEditorData(QWidget* editor,
                                       const QModelIndex& index) const
 {
+  // Attempt to get an enumeration map from the data enum role
   QVariant enum_map = index.data(EnumRole);
   if(!enum_map.isNull())
   {
-    QMap<int, QString> map = enum_map.value<QMap<int, QString>>();
-    QVariant data = index.data(Qt::EditRole);
-    if(!data.isNull())
-    {
-      auto it = map.find(data.toInt());
-      if(it != map.end())
-      {
-        QComboBox* box = static_cast<QComboBox*>(editor);
-        box->setCurrentText(it.value());
-      }
-    }
+    // Use the currently selected index (i.e. the data in the edit role) to set the text of the combo box
+    QString enum_value = index.data(Qt::EditRole).toString();
+
+    QComboBox* box = static_cast<QComboBox*>(editor);
+    box->setCurrentText(enum_value);
   }
 
   QStyledItemDelegate::setEditorData(editor, index);
@@ -55,16 +50,10 @@ void ComponentDelegate::setModelData(QWidget* editor,
   QVariant enum_map = index.data(EnumRole);
   if(!enum_map.isNull())
   {
-    QMap<int, QString> map = enum_map.value<QMap<int, QString>>();
-
     QComboBox* box = static_cast<QComboBox*>(editor);
-    int key = map.key(box->currentText(), -1);
-    if(key >= 0)
+    if(!model->setData(index, box->currentText(), Qt::EditRole))
     {
-      if(!model->setData(index, key))
-      {
-        ROS_WARN_STREAM("Didn't set the data");
-      }
+      ROS_WARN_STREAM("Failed to set enumeration data");
     }
   }
 
