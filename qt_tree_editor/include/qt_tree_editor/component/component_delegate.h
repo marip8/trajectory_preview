@@ -1,10 +1,9 @@
 #ifndef QT_TREE_EDITOR_COMPONENT_DELEGATE_H
 #define QT_TREE_EDITOR_COMPONENT_DELEGATE_H
 
+#include "qt_tree_editor/user_roles.h"
 #include <QStyledItemDelegate>
 #include <QDoubleSpinBox>
-
-const static int EnumRole = Qt::UserRole + 3;
 
 class ComponentDelegate : public QStyledItemDelegate
 {
