@@ -5,17 +5,16 @@
 #include <QApplication>
 #include <functional>
 
-Component::Component()
-  : QStandardItem()
-  , properties_(new QStandardItemModel())
-{
-}
-
 Component::Component(const QString& text)
   : QStandardItem(text)
   , properties_(new QStandardItemModel())
 {
+  properties_->setHorizontalHeaderLabels({"Name", "Value"});
+}
 
+Component::Component()
+  : Component("")
+{
 }
 
 Component::~Component()
@@ -33,9 +32,12 @@ void Component::addProperty(const QString& name,
   if(value.canConvert<QList<QVariant>>())
   {
     // Append a "header" row for the list including the values of all
-    properties_->appendRow({name_item, new QStandardItem(value.toString())});
+    QStandardItem* header_value = new QStandardItem();
+    header_value->setEditable(false);
+    properties_->appendRow({name_item, header_value});
 
     QStandardItem* header = properties_->item(properties_->rowCount() - 1);
+
 
     QVariantList list = value.toList();
     QList<QStandardItem*> items;
