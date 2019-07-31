@@ -2,14 +2,16 @@
 #define QT_TREE_EDITOR_COMPONENT_H
 
 #include <QStandardItem>
-#include <QStandardItemModel>
+
+class QStandardItemModel;
+class QMenu;
 
 class Component : public QStandardItem
 {
 public:
 
   explicit Component();
-  Component(const QString& text);
+  explicit Component(const QString& text);
 
   virtual ~Component();
 
@@ -17,11 +19,13 @@ public:
 
   QStandardItemModel* getPropertyModel() const;
 
+  virtual QMenu* getContextMenu(const QModelIndex& index);
+
   void addProperty(const QString& name,
                    const QVariant& value,
                    const int role = Qt::EditRole);
 
-private:
+protected:
 
   QStandardItemModel* properties_;
 };
