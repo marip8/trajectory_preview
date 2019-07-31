@@ -1,7 +1,7 @@
-#include <QApplication>
 #include "qt_tree_editor/tree_editor.hpp"
 #include "qt_tree_editor/property/impl/geometry_msgs_properties.hpp"
-#include <console_bridge/console.h>
+#include "qt_tree_editor/property/impl/shape_msgs_properties.hpp"
+#include <QApplication>
 
 int main(int argc, char** argv)
 {
@@ -14,9 +14,16 @@ int main(int argc, char** argv)
     msg.poses.push_back(geometry_msgs::Pose());
   }
 
+//  shape_msgs::SolidPrimitive msg;
+//  msg.type = shape_msgs::SolidPrimitive::BOX;
+//  msg.dimensions.resize(3);
+//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_X] = 1.0;
+//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Y] = 2.0;
+//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 3.0;
+
   // Create a tree editor and show the widget
-  TreeEditor<geometry_msgs::PoseArray> tree_editor;
-  QWidget* widget = tree_editor.createEditor(msg, "pose_array");
+  TreeEditor<decltype(msg)> tree_editor;
+  QWidget* widget = tree_editor.createEditor(msg, "demo");
   widget->show();
 
   // Execute the application
@@ -25,14 +32,12 @@ int main(int argc, char** argv)
   bool success = tree_editor.get(msg);
   if(success)
   {
-    std::stringstream ss;
-    ss << "Message:\n" << ros::message_traits::datatype(msg);
-    CONSOLE_BRIDGE_logInform(ss.str().c_str());
-    return -1;
+    ROS_INFO_STREAM("Message:\n" << msg);
+    return 0;
   }
   else
   {
-    CONSOLE_BRIDGE_logError("Failure");
-    return 0;
+    ROS_ERROR_STREAM("Failure");
+    return -1;
   }
 }
