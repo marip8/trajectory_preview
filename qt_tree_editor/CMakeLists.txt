@@ -5,8 +5,9 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  shape_msgs
   std_msgs
-  rosconsole_bridge
+  rosconsole
 )
 
 find_package(Qt5 REQUIRED COMPONENTS
@@ -15,12 +16,15 @@ find_package(Qt5 REQUIRED COMPONENTS
 )
 
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS
+    include
   LIBRARIES
     ${PROJECT_NAME}
   CATKIN_DEPENDS
     geometry_msgs
+    shape_msgs
     std_msgs
+    rosconsole
 )
 
 ###########
@@ -51,6 +55,7 @@ qt5_wrap_cpp(${PROJECT_NAME}_MOC_HEADERS
 
 add_library(${PROJECT_NAME}
   src/component.cpp
+  src/vector_child_component.cpp
   src/component_delegate.cpp
   ${${PROJECT_NAME}_MOC_HEADERS}
   ${${PROJECT_NAME}_MOC_UI}
