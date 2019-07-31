@@ -4,10 +4,17 @@
 #include "qt_tree_editor/component/component_delegate.h"
 #include "qt_tree_editor/property/property.h"
 #include "qt_tree_editor/tree_editor.h"
-#include "ui_tree_editor.h"
-#include <QWidget>
+
 #include <QStandardItemModel>
 #include <functional>
+
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QMenu>
 
 template<typename T>
 TreeEditor<T>::~TreeEditor()
@@ -17,24 +24,58 @@ TreeEditor<T>::~TreeEditor()
 }
 
 template<typename T>
+void TreeEditor<T>::setupUi(QWidget* parent)
+{
+  if (parent->objectName().isEmpty())
+  {
+    parent->setObjectName(QStringLiteral("TreeEditor"));
+  }
+  parent->resize(360, 570);
+
+  vertical_layout_ = new QVBoxLayout(parent);
+  vertical_layout_->setObjectName(QStringLiteral("verticalLayout"));
+
+  component_view_ = new QTreeView(parent);
+  component_view_->setObjectName(QStringLiteral("tree_view"));
+
+  vertical_layout_->addWidget(component_view_);
+
+  line_ = new QFrame(parent);
+  line_->setObjectName(QStringLiteral("line"));
+  line_->setFrameShape(QFrame::HLine);
+  line_->setFrameShadow(QFrame::Sunken);
+
+  vertical_layout_->addWidget(line_);
+
+  property_view_ = new QTreeView(parent);
+  property_view_->setObjectName(QStringLiteral("table_view"));
+
+  vertical_layout_->addWidget(property_view_);
+
+  parent->setWindowTitle(QApplication::translate("TreeEditor", "Form", 0));
+
+  QMetaObject::connectSlotsByName(parent);
+}
+
+template<typename T>
 QWidget* TreeEditor<T>::createEditor(const T& msg,
                                      const QString& name)
 {
   widget_ = new QWidget();
-  ui_ = new Ui::TreeEditor();
-  ui_->setupUi(widget_);
+  setupUi(widget_);
 
   model_ = new QStandardItemModel();
   model_->setHorizontalHeaderLabels({"Name", "Type"});
   QStandardItem* item = model_->invisibleRootItem();
-  Property<T>::encode(msg, name, item);
+  Property<T>::template encode<Component>(msg, name, item);
 
-  ui_->tree_view->setModel(model_);
-  ui_->tree_view->expandAll();
+  component_view_->setModel(model_);
+  component_view_->expandAll();
+  component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  ui_->table_view->setItemDelegate(new ComponentDelegate());
+  property_view_->setItemDelegate(new ComponentDelegate());
 
-  QApplication::connect(ui_->tree_view, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
+  QApplication::connect(component_view_, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
 
   return widget_;
 }
@@ -54,7 +95,7 @@ void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
     Component* prop = static_cast<Component*>(model->itemFromIndex(sibling));
     if(prop)
     {
-      ui_->table_view->setModel(prop->getPropertyModel());
+      property_view_->setModel(prop->getPropertyModel());
     }
   }
 }

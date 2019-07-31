@@ -3,13 +3,11 @@
 
 #include <QModelIndex>
 
+class QFrame;
+class QTreeView;
+class QVBoxLayout;
 class QWidget;
 class QStandardItemModel;
-
-namespace Ui
-{
-class TreeEditor;
-}
 
 template<typename T>
 class TreeEditor
@@ -29,8 +27,12 @@ private:
 
   void onTreeSelectionChanged(const QModelIndex& index);
 
-  Ui::TreeEditor* ui_;
+  void setupUi(QWidget* parent);
 
+  QVBoxLayout* vertical_layout_;
+  QTreeView* component_view_;
+  QTreeView* property_view_;
+  QFrame* line_;
   QWidget* widget_;
 
   QStandardItemModel* model_;
