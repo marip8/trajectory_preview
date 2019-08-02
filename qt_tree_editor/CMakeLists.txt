@@ -80,11 +80,6 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
 
-install(FILES
-  ui/tree_editor.ui
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
 #############
 ## Testing ##
 #############
