@@ -22,6 +22,12 @@ public:
   virtual void setModelData(QWidget* editor,
                             QAbstractItemModel* model,
                             const QModelIndex& index) const override;
+
+protected:
+
+  void onFileSelected(const QString& file);
+
+  QString file_path_;
 };
 
 #endif // QT_TREE_EDITOR_COMPONENT_DELEGATE_H

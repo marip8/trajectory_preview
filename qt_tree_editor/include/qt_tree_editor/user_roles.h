@@ -4,5 +4,6 @@
 #include <qnamespace.h>
 
 const static int EnumRole = Qt::UserRole + 3;
+const static int FileDialogRole = Qt::UserRole + 4;
 
 #endif // QT_TREE_EDITOR_USER_ROLES_H
