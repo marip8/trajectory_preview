@@ -4,6 +4,7 @@
 #include "qt_tree_editor/property/property.h"
 #include <std_msgs/Header.h>
 #include <ros/console.h>
+#include "qt_tree_editor/user_roles.h"
 
 template<>
 struct Property<std_msgs::Header>
