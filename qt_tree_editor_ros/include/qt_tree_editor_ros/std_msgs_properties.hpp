@@ -1,10 +1,13 @@
-#ifndef QT_TREE_EDITOR_STD_MSGS_PROPERTIES_HPP
-#define QT_TREE_EDITOR_STD_MSGS_PROPERTIES_HPP
+#ifndef QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP
+#define QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP
 
 #include "qt_tree_editor/property/property.h"
 #include <std_msgs/Header.h>
 #include <ros/console.h>
 #include "qt_tree_editor/user_roles.h"
+
+namespace qt_tree_editor
+{
 
 template<>
 struct Property<std_msgs::Header>
@@ -45,4 +48,6 @@ struct Property<std_msgs::Header>
   }
 };
 
-#endif // QT_TREE_EDITOR_STD_MSGS_PROPERTIES_HPP
+} // namespace qt_tree_editor
+
+#endif // QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP

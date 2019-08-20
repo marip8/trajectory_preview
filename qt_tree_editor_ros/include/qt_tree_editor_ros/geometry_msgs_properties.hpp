@@ -1,9 +1,12 @@
-#ifndef QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
-#define QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
+#ifndef QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP
+#define QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor/property/impl/stl_properties.hpp"
-#include "qt_tree_editor/property/impl/std_msgs_properties.hpp"
+#include "qt_tree_editor_ros/stl_properties.hpp"
+#include "qt_tree_editor_ros/std_msgs_properties.hpp"
 #include <geometry_msgs/PoseArray.h>
+
+namespace qt_tree_editor
+{
 
 template<>
 struct Property<geometry_msgs::Quaternion>
@@ -160,4 +163,6 @@ struct Property<geometry_msgs::PoseArray>
   }
 };
 
-#endif // QT_TREE_EDITOR_GEOMETRY_MSGS_PROPERTIES_HPP
+} // namespace qt_tree_editor
+
+#endif // QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP

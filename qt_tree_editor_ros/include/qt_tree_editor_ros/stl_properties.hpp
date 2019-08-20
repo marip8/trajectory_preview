@@ -1,5 +1,5 @@
-#ifndef QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
-#define QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
+#ifndef QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP
+#define QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP
 
 #include "qt_tree_editor/property/property.h"
 #include "qt_tree_editor/component/impl/vector_component.hpp"
@@ -7,6 +7,9 @@
 #include <ros/console.h>
 #include <sstream>
 #include <vector>
+
+namespace qt_tree_editor
+{
 
 template<typename T>
 struct Property<std::vector<T>>
@@ -57,4 +60,6 @@ struct Property<std::vector<T>>
   }
 };
 
-#endif // QT_TREE_EDITOR_PROPERTY_IMPL_STL_PROPERTIES_HPP
+} // namespace qt_tree_editor
+
+#endif // QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP

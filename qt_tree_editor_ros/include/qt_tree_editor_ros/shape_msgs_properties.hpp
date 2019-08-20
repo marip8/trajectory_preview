@@ -1,10 +1,13 @@
-#ifndef QT_TREE_EDITOR_PROPERTY_IMPL_SHAPE_MSGS_PROPERTIES_HPP
-#define QT_TREE_EDITOR_PROPERTY_IMPL_SHAPE_MSGS_PROPERTIES_HPP
+#ifndef QT_TREE_EDITOR_ROS_SHAPE_MSGS_PROPERTIES_HPP
+#define QT_TREE_EDITOR_ROS_SHAPE_MSGS_PROPERTIES_HPP
 
 #include "qt_tree_editor/property/property.h"
 #include "qt_tree_editor/user_roles.h"
 #include <shape_msgs/SolidPrimitive.h>
 #include <ros/console.h>
+
+namespace qt_tree_editor
+{
 
 template<>
 struct Property<shape_msgs::SolidPrimitive>
@@ -130,4 +133,6 @@ struct Property<shape_msgs::SolidPrimitive>
   }
 };
 
-#endif // QT_TREE_EDITOR_PROPERTY_IMPL_SHAPE_MSGS_PROPERTIES_HPP
+} // namespace qt_tree_editor
+
+#endif // QT_TREE_EDITOR_ROS_SHAPE_MSGS_PROPERTIES_HPP
