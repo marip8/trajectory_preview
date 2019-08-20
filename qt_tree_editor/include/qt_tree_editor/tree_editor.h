@@ -9,10 +9,13 @@ class QVBoxLayout;
 class QWidget;
 class QStandardItemModel;
 
+namespace qt_tree_editor
+{
+
 template<typename T>
 class TreeEditor
 {
-public:
+  public:
 
   TreeEditor() = default;
 
@@ -23,7 +26,17 @@ public:
 
   bool get(T& msg);
 
-private:
+  inline const QTreeView* getComponentView() const
+  {
+    return component_view_;
+  }
+
+  inline const QTreeView* getPropertyView() const
+  {
+    return property_view_;
+  }
+
+  private:
 
   void onTreeSelectionChanged(const QModelIndex& index);
 
@@ -39,5 +52,7 @@ private:
 
   QStandardItemModel* model_;
 };
+
+} // namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_TREE_EDITOR_H

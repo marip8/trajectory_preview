@@ -6,6 +6,9 @@
 #include <QMenu>
 #include <functional>
 
+namespace qt_tree_editor
+{
+
 QMenu* VectorChildComponent::getContextMenu(const QModelIndex& index)
 {
   QMenu* menu = new QMenu();
@@ -31,5 +34,7 @@ void VectorChildComponent::remove(const bool,
     child->setText(QString::fromStdString(name));
   }
 }
+
+} // namespace qt_tree_editor
 
 #endif // VECTOR_CHILD_COMPONENT_HPP

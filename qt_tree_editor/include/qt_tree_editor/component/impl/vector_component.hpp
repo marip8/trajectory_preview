@@ -5,6 +5,9 @@
 #include <QApplication>
 #include <functional>
 
+namespace qt_tree_editor
+{
+
 template<typename T>
 QMenu* VectorComponent<T>::getContextMenu(const QModelIndex&)
 {
@@ -37,3 +40,5 @@ void VectorComponent<T>::addChild(const bool)
   const std::string name = "[" + std::to_string(rowCount()) + "]";
   Property<Type>::template encode<VectorChildComponent>(msg, QString::fromStdString(name), this);
 }
+
+} // namespace qt_tree_editor

@@ -1,7 +1,7 @@
-#include "qt_tree_editor/tree_editor.hpp"
-#include "qt_tree_editor/property/impl/geometry_msgs_properties.hpp"
-#include "qt_tree_editor/property/impl/shape_msgs_properties.hpp"
 #include <QApplication>
+#include <qt_tree_editor/tree_editor.hpp>
+#include "qt_tree_editor_ros/geometry_msgs_properties.hpp"
+#include "qt_tree_editor_ros/shape_msgs_properties.hpp"
 
 int main(int argc, char** argv)
 {
@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 //  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 3.0;
 
   // Create a tree editor and show the widget
-  TreeEditor<decltype(msg)> tree_editor;
+  qt_tree_editor::TreeEditor<decltype(msg)> tree_editor;
   QWidget* widget = tree_editor.createEditor(msg, "demo");
   widget->show();
 

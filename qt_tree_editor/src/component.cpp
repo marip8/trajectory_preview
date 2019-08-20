@@ -5,6 +5,9 @@
 #include <QApplication>
 #include <functional>
 
+namespace qt_tree_editor
+{
+
 Component::Component(const QString& text)
   : QStandardItem(text)
   , properties_(new QStandardItemModel())
@@ -74,3 +77,5 @@ QMenu* Component::getContextMenu(const QModelIndex&)
 {
   return nullptr;
 }
+
+} // namespace qt_tree_editor

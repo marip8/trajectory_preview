@@ -1,8 +1,9 @@
 #ifndef QT_TREE_EDITOR_TREE_EDITOR_HPP
 #define QT_TREE_EDITOR_TREE_EDITOR_HPP
 
-#include "qt_tree_editor/component/component_delegate.h"
+#include "qt_tree_editor/property/property_delegate.h"
 #include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/component/component_delegate.h"
 #include "qt_tree_editor/tree_editor.h"
 
 #include <QStandardItemModel>
@@ -15,6 +16,9 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenu>
+
+namespace qt_tree_editor
+{
 
 template<typename T>
 TreeEditor<T>::~TreeEditor()
@@ -37,6 +41,7 @@ void TreeEditor<T>::setupUi(QWidget* parent)
 
   component_view_ = new QTreeView(parent);
   component_view_->setObjectName(QStringLiteral("tree_view"));
+  component_view_->setAlternatingRowColors(true);
 
   vertical_layout_->addWidget(component_view_);
 
@@ -49,6 +54,7 @@ void TreeEditor<T>::setupUi(QWidget* parent)
 
   property_view_ = new QTreeView(parent);
   property_view_->setObjectName(QStringLiteral("table_view"));
+  property_view_->setAlternatingRowColors(true);
 
   vertical_layout_->addWidget(property_view_);
 
@@ -70,10 +76,15 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
   Property<T>::template encode<Component>(msg, name, item);
 
   component_view_->setModel(model_);
-  component_view_->expandAll();
   component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
+  component_view_->setItemDelegate(new ComponentDelegate());
+  component_view_->expandAll();
+  for (int i = 0; i < model_->columnCount(); ++i)
+  {
+    component_view_->resizeColumnToContents(i);
+  }
 
-  property_view_->setItemDelegate(new ComponentDelegate());
+  property_view_->setItemDelegate(new PropertyDelegate());
 
   QApplication::connect(component_view_, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
   QApplication::connect(component_view_, &QTreeView::customContextMenuRequested, std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
@@ -97,6 +108,11 @@ void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
     if(prop)
     {
       property_view_->setModel(prop->getPropertyModel());
+      property_view_->expandAll();
+      for (int i = 0; i < model->columnCount(); ++i)
+      {
+        property_view_->resizeColumnToContents(i);
+      }
     }
   }
 }
@@ -123,5 +139,7 @@ void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
     delete menu;
   }
 }
+
+} // namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_TREE_EDITOR_HPP

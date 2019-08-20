@@ -4,9 +4,6 @@ project(qt_tree_editor)
 add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  shape_msgs
-  std_msgs
   rosconsole
 )
 
@@ -21,9 +18,6 @@ catkin_package(
   LIBRARIES
     ${PROJECT_NAME}
   CATKIN_DEPENDS
-    geometry_msgs
-    shape_msgs
-    std_msgs
     rosconsole
 )
 
@@ -38,6 +32,7 @@ include_directories(
 )
 
 set(${PROJECT_NAME}_HEADERS
+  include/${PROJECT_NAME}/property/property_delegate.h
   include/${PROJECT_NAME}/component/component_delegate.h
 )
 
@@ -48,6 +43,7 @@ qt5_wrap_cpp(${PROJECT_NAME}_MOC_HEADERS
 add_library(${PROJECT_NAME}
   src/component.cpp
   src/vector_child_component.cpp
+  src/property_delegate.cpp
   src/component_delegate.cpp
   ${${PROJECT_NAME}_MOC_HEADERS}
 )
@@ -57,20 +53,11 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Core
 )
 
-add_executable(${PROJECT_NAME}_demo
-  src/demo/tree_editor_demo.cpp
-)
-target_link_libraries(${PROJECT_NAME}_demo
-  ${catkin_LIBRARIES}
-  ${PROJECT_NAME}
-  Qt5::Core
-)
-
 #############
 ## Install ##
 #############
 
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_demo
+install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -79,7 +66,3 @@ install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_demo
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
-
-#############
-## Testing ##
-#############

@@ -5,9 +5,12 @@
 #include <QStandardItem>
 #include "qt_tree_editor/component/component.h"
 
+namespace qt_tree_editor
+{
+
 template<typename ComponentType>
 inline QList<QStandardItem*> createPair(const QString& name,
-                                        const QString& datatype)
+                                         const QString& datatype)
 {
   QList<QStandardItem*> list;
   list << new ComponentType(name)
@@ -30,5 +33,7 @@ struct Property
   static bool decode(const Component* item,
                      T& msg);
 };
+
+} //namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_PROPERTY_H
