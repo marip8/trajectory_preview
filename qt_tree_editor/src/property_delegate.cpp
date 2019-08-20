@@ -1,15 +1,15 @@
-#include "qt_tree_editor/component/component_delegate.h"
+#include "qt_tree_editor/property/property_delegate.h"
 #include <QComboBox>
 #include <QFileDialog>
 #include <ros/console.h>
 
-ComponentDelegate::ComponentDelegate(QObject* parent)
+PropertyDelegate::PropertyDelegate(QObject* parent)
   : QStyledItemDelegate(parent)
 {
 
 }
 
-QWidget* ComponentDelegate::createEditor(QWidget* parent,
+QWidget* PropertyDelegate::createEditor(QWidget* parent,
                                          const QStyleOptionViewItem& option,
                                          const QModelIndex& index) const
 {
@@ -28,14 +28,14 @@ QWidget* ComponentDelegate::createEditor(QWidget* parent,
   if(file_dialog_data.isValid())
   {
     QFileDialog* file_dialog = new QFileDialog(parent);
-    connect(file_dialog, &QFileDialog::fileSelected, this, &ComponentDelegate::onFileSelected);
+    connect(file_dialog, &QFileDialog::fileSelected, this, &PropertyDelegate::onFileSelected);
     return file_dialog;
   }
 
   return QStyledItemDelegate::createEditor(parent, option, index);
 }
 
-void ComponentDelegate::setEditorData(QWidget* editor,
+void PropertyDelegate::setEditorData(QWidget* editor,
                                       const QModelIndex& index) const
 {
   // Attempt to get an enumeration map from the data enum role
@@ -52,7 +52,7 @@ void ComponentDelegate::setEditorData(QWidget* editor,
   QStyledItemDelegate::setEditorData(editor, index);
 }
 
-void ComponentDelegate::setModelData(QWidget* editor,
+void PropertyDelegate::setModelData(QWidget* editor,
                                      QAbstractItemModel* model,
                                      const QModelIndex& index) const
 {
@@ -79,7 +79,7 @@ void ComponentDelegate::setModelData(QWidget* editor,
   QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-void ComponentDelegate::onFileSelected(const QString& file)
+void PropertyDelegate::onFileSelected(const QString& file)
 {
   file_path_ = file;
 }

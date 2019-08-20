@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_TREE_EDITOR_HPP
 #define QT_TREE_EDITOR_TREE_EDITOR_HPP
 
-#include "qt_tree_editor/component/component_delegate.h"
+#include "qt_tree_editor/property/property_delegate.h"
 #include "qt_tree_editor/property/property.h"
 #include "qt_tree_editor/tree_editor.h"
 
@@ -73,7 +73,7 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
   component_view_->expandAll();
   component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  property_view_->setItemDelegate(new ComponentDelegate());
+  property_view_->setItemDelegate(new PropertyDelegate());
 
   QApplication::connect(component_view_, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
   QApplication::connect(component_view_, &QTreeView::customContextMenuRequested, std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));

@@ -1,16 +1,16 @@
-#ifndef QT_TREE_EDITOR_COMPONENT_DELEGATE_H
-#define QT_TREE_EDITOR_COMPONENT_DELEGATE_H
+#ifndef QT_TREE_EDITOR_PROPERTY_PROPERTY_DELEGATE_H
+#define QT_TREE_EDITOR_PROPERTY_PROPERTY_DELEGATE_H
 
 #include "qt_tree_editor/user_roles.h"
 #include <QStyledItemDelegate>
 #include <QDoubleSpinBox>
 
-class ComponentDelegate : public QStyledItemDelegate
+class PropertyDelegate : public QStyledItemDelegate
 {
 Q_OBJECT
 public:
 
-  ComponentDelegate(QObject* parent = nullptr);
+  PropertyDelegate(QObject* parent = nullptr);
 
   virtual QWidget* createEditor(QWidget* parent,
                                 const QStyleOptionViewItem&,
@@ -30,4 +30,4 @@ protected:
   QString file_path_;
 };
 
-#endif // QT_TREE_EDITOR_COMPONENT_DELEGATE_H
+#endif // QT_TREE_EDITOR_PROPERTY_PROPERTY_DELEGATE_H
