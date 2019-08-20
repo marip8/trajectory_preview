@@ -1,6 +1,7 @@
 #include "qt_tree_editor/property/property_delegate.h"
 #include <QComboBox>
 #include <QFileDialog>
+#include <QPainter>
 #include <ros/console.h>
 
 QWidget* PropertyDelegate::createEditor(QWidget* parent,
@@ -76,4 +77,23 @@ void PropertyDelegate::setModelData(QWidget* editor,
 void PropertyDelegate::onFileSelected(const QString& file)
 {
   file_path_ = file;
+}
+
+void PropertyDelegate::paint(QPainter *painter,
+                             const QStyleOptionViewItem &option,
+                             const QModelIndex &index) const
+{
+  QStyledItemDelegate::paint(painter, option, index);
+
+  painter->save();
+
+  QPen pen;
+  pen.setColor(Qt::gray);
+  pen.setStyle(Qt::DotLine);
+  painter->setPen(pen);
+
+  painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+  painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+
+  painter->restore();
 }

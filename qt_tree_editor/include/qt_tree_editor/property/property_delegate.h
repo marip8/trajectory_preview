@@ -22,6 +22,10 @@ public:
                             QAbstractItemModel* model,
                             const QModelIndex& index) const override;
 
+  virtual void paint(QPainter *painter,
+                     const QStyleOptionViewItem &opt,
+                     const QModelIndex &index) const override;
+
 protected:
 
   void onFileSelected(const QString& file);
