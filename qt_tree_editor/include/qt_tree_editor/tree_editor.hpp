@@ -38,6 +38,7 @@ void TreeEditor<T>::setupUi(QWidget* parent)
 
   component_view_ = new QTreeView(parent);
   component_view_->setObjectName(QStringLiteral("tree_view"));
+  component_view_->setAlternatingRowColors(true);
 
   vertical_layout_->addWidget(component_view_);
 
@@ -50,6 +51,7 @@ void TreeEditor<T>::setupUi(QWidget* parent)
 
   property_view_ = new QTreeView(parent);
   property_view_->setObjectName(QStringLiteral("table_view"));
+  property_view_->setAlternatingRowColors(true);
 
   vertical_layout_->addWidget(property_view_);
 
@@ -71,9 +73,13 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
   Property<T>::template encode<Component>(msg, name, item);
 
   component_view_->setModel(model_);
-  component_view_->expandAll();
   component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
   component_view_->setItemDelegate(new ComponentDelegate());
+  component_view_->expandAll();
+  for (int i = 0; i < model_->columnCount(); ++i)
+  {
+    component_view_->resizeColumnToContents(i);
+  }
 
   property_view_->setItemDelegate(new PropertyDelegate());
 
@@ -99,6 +105,11 @@ void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
     if(prop)
     {
       property_view_->setModel(prop->getPropertyModel());
+      property_view_->expandAll();
+      for (int i = 0; i < model->columnCount(); ++i)
+      {
+        property_view_->resizeColumnToContents(i);
+      }
     }
   }
 }
