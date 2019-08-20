@@ -5,10 +5,13 @@
 #include <QStyledItemDelegate>
 #include <QDoubleSpinBox>
 
+namespace qt_tree_editor
+{
+
 class PropertyDelegate : public QStyledItemDelegate
 {
-Q_OBJECT
-public:
+  Q_OBJECT
+  public:
   using QStyledItemDelegate::QStyledItemDelegate;
 
   virtual QWidget* createEditor(QWidget* parent,
@@ -26,11 +29,13 @@ public:
                      const QStyleOptionViewItem &opt,
                      const QModelIndex &index) const override;
 
-protected:
+  protected:
 
   void onFileSelected(const QString& file);
 
   QString file_path_;
 };
+
+} // namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_PROPERTY_PROPERTY_DELEGATE_H

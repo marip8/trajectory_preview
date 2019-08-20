@@ -4,9 +4,12 @@
 #include <QPainter>
 #include <ros/console.h>
 
+namespace qt_tree_editor
+{
+
 QWidget* PropertyDelegate::createEditor(QWidget* parent,
-                                         const QStyleOptionViewItem& option,
-                                         const QModelIndex& index) const
+                                        const QStyleOptionViewItem& option,
+                                        const QModelIndex& index) const
 {
   QVariant enum_map = index.data(EnumRole);
   if(enum_map.isValid())
@@ -31,7 +34,7 @@ QWidget* PropertyDelegate::createEditor(QWidget* parent,
 }
 
 void PropertyDelegate::setEditorData(QWidget* editor,
-                                      const QModelIndex& index) const
+                                     const QModelIndex& index) const
 {
   // Attempt to get an enumeration map from the data enum role
   QVariant enum_map = index.data(EnumRole);
@@ -48,8 +51,8 @@ void PropertyDelegate::setEditorData(QWidget* editor,
 }
 
 void PropertyDelegate::setModelData(QWidget* editor,
-                                     QAbstractItemModel* model,
-                                     const QModelIndex& index) const
+                                    QAbstractItemModel* model,
+                                    const QModelIndex& index) const
 {
   QVariant enum_map = index.data(EnumRole);
   if(enum_map.isValid())
@@ -97,3 +100,5 @@ void PropertyDelegate::paint(QPainter *painter,
 
   painter->restore();
 }
+
+} // namespace qt_tree_editor

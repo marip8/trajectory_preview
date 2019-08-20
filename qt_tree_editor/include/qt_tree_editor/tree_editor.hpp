@@ -17,6 +17,9 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenu>
 
+namespace qt_tree_editor
+{
+
 template<typename T>
 TreeEditor<T>::~TreeEditor()
 {
@@ -136,5 +139,7 @@ void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
     delete menu;
   }
 }
+
+} // namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_TREE_EDITOR_HPP

@@ -6,9 +6,12 @@
 class QStandardItemModel;
 class QMenu;
 
+namespace qt_tree_editor
+{
+
 class Component : public QStandardItem
 {
-public:
+  public:
 
   explicit Component();
   explicit Component(const QString& text);
@@ -25,9 +28,11 @@ public:
                    const QVariant& value,
                    const int role = Qt::EditRole);
 
-protected:
+  protected:
 
   QStandardItemModel* properties_;
 };
+
+} // namespace qt_tree_editor
 
 #endif // QT_TREE_EDITOR_COMPONENT_H
