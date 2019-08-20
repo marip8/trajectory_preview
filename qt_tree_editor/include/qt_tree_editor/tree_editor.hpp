@@ -3,6 +3,7 @@
 
 #include "qt_tree_editor/property/property_delegate.h"
 #include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/component/component_delegate.h"
 #include "qt_tree_editor/tree_editor.h"
 
 #include <QStandardItemModel>
@@ -72,6 +73,7 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
   component_view_->setModel(model_);
   component_view_->expandAll();
   component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
+  component_view_->setItemDelegate(new ComponentDelegate());
 
   property_view_->setItemDelegate(new PropertyDelegate());
 
