@@ -9,8 +9,7 @@ class PropertyDelegate : public QStyledItemDelegate
 {
 Q_OBJECT
 public:
-
-  PropertyDelegate(QObject* parent = nullptr);
+  using QStyledItemDelegate::QStyledItemDelegate;
 
   virtual QWidget* createEditor(QWidget* parent,
                                 const QStyleOptionViewItem&,

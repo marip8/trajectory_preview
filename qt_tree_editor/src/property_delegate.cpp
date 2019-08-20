@@ -3,12 +3,6 @@
 #include <QFileDialog>
 #include <ros/console.h>
 
-PropertyDelegate::PropertyDelegate(QObject* parent)
-  : QStyledItemDelegate(parent)
-{
-
-}
-
 QWidget* PropertyDelegate::createEditor(QWidget* parent,
                                          const QStyleOptionViewItem& option,
                                          const QModelIndex& index) const
