@@ -23,6 +23,16 @@ public:
 
   bool get(T& msg);
 
+  inline const QTreeView* getComponentView() const
+  {
+    return component_view_;
+  }
+
+  inline const QTreeView* getPropertyView() const
+  {
+    return property_view_;
+  }
+
 private:
 
   void onTreeSelectionChanged(const QModelIndex& index);
