@@ -10,8 +10,8 @@ namespace qt_tree_editor
 
 class PropertyDelegate : public QStyledItemDelegate
 {
-  Q_OBJECT
-  public:
+Q_OBJECT
+public:
   using QStyledItemDelegate::QStyledItemDelegate;
 
   virtual QWidget* createEditor(QWidget* parent,
@@ -29,7 +29,7 @@ class PropertyDelegate : public QStyledItemDelegate
                      const QStyleOptionViewItem &opt,
                      const QModelIndex &index) const override;
 
-  protected:
+protected:
 
   void onFileSelected(const QString& file);
 
