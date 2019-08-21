@@ -50,7 +50,6 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <depend>geometry_msgs</depend>
-  <depend>qt_tree_editor</depend>
   <depend>rosconsole</depend>
   <depend>shape_msgs</depend>
   <depend>std_msgs</depend>
