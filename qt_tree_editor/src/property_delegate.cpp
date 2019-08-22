@@ -2,7 +2,7 @@
 #include <QComboBox>
 #include <QFileDialog>
 #include <QPainter>
-#include <ros/console.h>
+#include <console_bridge/console.h>
 
 namespace qt_tree_editor
 {
@@ -60,7 +60,7 @@ void PropertyDelegate::setModelData(QWidget* editor,
     QComboBox* box = static_cast<QComboBox*>(editor);
     if(!model->setData(index, box->currentText(), Qt::EditRole))
     {
-      ROS_WARN_STREAM("Failed to set enumeration data");
+      CONSOLE_BRIDGE_logWarn("Failed to set enumeration data");
     }
   }
 
@@ -69,7 +69,7 @@ void PropertyDelegate::setModelData(QWidget* editor,
   {
     if(!model->setData(index, file_path_, Qt::EditRole))
     {
-      ROS_WARN_STREAM("Failed to set file dialog data");
+      CONSOLE_BRIDGE_logWarn("Failed to set file dialog data");
     }
     return;
   }

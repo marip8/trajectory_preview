@@ -5,23 +5,18 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
-  qt_tree_editor
   rosconsole
   shape_msgs
   std_msgs
 )
 
-find_package(Qt5 REQUIRED COMPONENTS
-  Core
-  Widgets
-)
+find_package(qt_tree_editor REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS
     include
   CATKIN_DEPENDS
     geometry_msgs
-    qt_tree_editor
     rosconsole
     shape_msgs
     std_msgs
@@ -41,8 +36,7 @@ add_executable(${PROJECT_NAME}_demo
 )
 target_link_libraries(${PROJECT_NAME}_demo
   ${catkin_LIBRARIES}
-  Qt5::Core
-  Qt5::Widgets
+  qt_tree_editor::qt_tree_editor
 )
 
 #############
