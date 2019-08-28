@@ -6,13 +6,11 @@
 
 namespace qt_tree_editor
 {
-
-QWidget* PropertyDelegate::createEditor(QWidget* parent,
-                                        const QStyleOptionViewItem& option,
+QWidget* PropertyDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option,
                                         const QModelIndex& index) const
 {
   QVariant enum_map = index.data(EnumRole);
-  if(enum_map.isValid())
+  if (enum_map.isValid())
   {
     QComboBox* box = new QComboBox(parent);
 
@@ -23,7 +21,7 @@ QWidget* PropertyDelegate::createEditor(QWidget* parent,
   }
 
   QVariant file_dialog_data = index.data(FileDialogRole);
-  if(file_dialog_data.isValid())
+  if (file_dialog_data.isValid())
   {
     QFileDialog* file_dialog = new QFileDialog(parent);
     connect(file_dialog, &QFileDialog::fileSelected, this, &PropertyDelegate::onFileSelected);
@@ -33,12 +31,11 @@ QWidget* PropertyDelegate::createEditor(QWidget* parent,
   return QStyledItemDelegate::createEditor(parent, option, index);
 }
 
-void PropertyDelegate::setEditorData(QWidget* editor,
-                                     const QModelIndex& index) const
+void PropertyDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
   // Attempt to get an enumeration map from the data enum role
   QVariant enum_map = index.data(EnumRole);
-  if(enum_map.isValid())
+  if (enum_map.isValid())
   {
     // Use the currently selected index (i.e. the data in the edit role) to set the text of the combo box
     QString enum_value = index.data(Qt::EditRole).toString();
@@ -50,24 +47,22 @@ void PropertyDelegate::setEditorData(QWidget* editor,
   QStyledItemDelegate::setEditorData(editor, index);
 }
 
-void PropertyDelegate::setModelData(QWidget* editor,
-                                    QAbstractItemModel* model,
-                                    const QModelIndex& index) const
+void PropertyDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
   QVariant enum_map = index.data(EnumRole);
-  if(enum_map.isValid())
+  if (enum_map.isValid())
   {
     QComboBox* box = static_cast<QComboBox*>(editor);
-    if(!model->setData(index, box->currentText(), Qt::EditRole))
+    if (!model->setData(index, box->currentText(), Qt::EditRole))
     {
       CONSOLE_BRIDGE_logWarn("Failed to set enumeration data");
     }
   }
 
   QVariant file_dialog_data = index.data(FileDialogRole);
-  if(file_dialog_data.isValid())
+  if (file_dialog_data.isValid())
   {
-    if(!model->setData(index, file_path_, Qt::EditRole))
+    if (!model->setData(index, file_path_, Qt::EditRole))
     {
       CONSOLE_BRIDGE_logWarn("Failed to set file dialog data");
     }
@@ -82,9 +77,7 @@ void PropertyDelegate::onFileSelected(const QString& file)
   file_path_ = file;
 }
 
-void PropertyDelegate::paint(QPainter *painter,
-                             const QStyleOptionViewItem &option,
-                             const QModelIndex &index) const
+void PropertyDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   QStyledItemDelegate::paint(painter, option, index);
 
@@ -101,4 +94,4 @@ void PropertyDelegate::paint(QPainter *painter,
   painter->restore();
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor

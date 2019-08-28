@@ -7,14 +7,11 @@
 
 namespace qt_tree_editor
 {
-
-template<typename ComponentType>
-inline QList<QStandardItem*> createPair(const QString& name,
-                                         const QString& datatype)
+template <typename ComponentType>
+inline QList<QStandardItem*> createPair(const QString& name, const QString& datatype)
 {
   QList<QStandardItem*> list;
-  list << new ComponentType(name)
-       << new ComponentType(datatype);
+  list << new ComponentType(name) << new ComponentType(datatype);
 
   list[0]->setEditable(false);
   list[1]->setEditable(false);
@@ -22,18 +19,15 @@ inline QList<QStandardItem*> createPair(const QString& name,
   return list;
 }
 
-template<typename T>
+template <typename T>
 struct Property
 {
-  template<typename ComponentT>
-  static void encode(const T& msg,
-                     const QString& name,
-                     QStandardItem* parent);
+  template <typename ComponentT>
+  static void encode(const T& msg, const QString& name, QStandardItem* parent);
 
-  static bool decode(const Component* item,
-                     T& msg);
+  static bool decode(const Component* item, T& msg);
 };
 
-} //namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_PROPERTY_H
+#endif  // QT_TREE_EDITOR_PROPERTY_H

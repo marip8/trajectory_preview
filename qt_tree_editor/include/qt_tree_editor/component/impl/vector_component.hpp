@@ -7,8 +7,7 @@
 
 namespace qt_tree_editor
 {
-
-template<typename T>
+template <typename T>
 QMenu* VectorComponent<T>::getContextMenu(const QModelIndex&)
 {
   QMenu* menu = new QMenu();
@@ -27,13 +26,13 @@ QMenu* VectorComponent<T>::getContextMenu(const QModelIndex&)
   return menu;
 }
 
-template<typename T>
+template <typename T>
 void VectorComponent<T>::removeAllChildren(const bool)
 {
   removeRows(0, rowCount());
 }
 
-template<typename T>
+template <typename T>
 void VectorComponent<T>::addChild(const bool)
 {
   Type msg;
@@ -41,4 +40,4 @@ void VectorComponent<T>::addChild(const bool)
   Property<Type>::template encode<VectorChildComponent>(msg, QString::fromStdString(name), this);
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor

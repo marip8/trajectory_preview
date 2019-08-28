@@ -9,17 +9,17 @@ int main(int argc, char** argv)
 
   // Create a message and fill it with some data
   geometry_msgs::PoseArray msg;
-  for(int i = 0; i < 10; ++i)
+  for (int i = 0; i < 10; ++i)
   {
     msg.poses.push_back(geometry_msgs::Pose());
   }
 
-//  shape_msgs::SolidPrimitive msg;
-//  msg.type = shape_msgs::SolidPrimitive::BOX;
-//  msg.dimensions.resize(3);
-//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_X] = 1.0;
-//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Y] = 2.0;
-//  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 3.0;
+  //  shape_msgs::SolidPrimitive msg;
+  //  msg.type = shape_msgs::SolidPrimitive::BOX;
+  //  msg.dimensions.resize(3);
+  //  msg.dimensions[shape_msgs::SolidPrimitive::BOX_X] = 1.0;
+  //  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Y] = 2.0;
+  //  msg.dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 3.0;
 
   // Create a tree editor and show the widget
   qt_tree_editor::TreeEditor<decltype(msg)> tree_editor;
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
   app.exec();
 
   bool success = tree_editor.get(msg);
-  if(success)
+  if (success)
   {
     ROS_INFO_STREAM("Message:\n" << msg);
     return 0;

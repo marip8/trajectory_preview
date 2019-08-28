@@ -19,15 +19,14 @@
 
 namespace qt_tree_editor
 {
-
-template<typename T>
+template <typename T>
 TreeEditor<T>::~TreeEditor()
 {
   delete widget_;
   delete model_;
 }
 
-template<typename T>
+template <typename T>
 void TreeEditor<T>::setupUi(QWidget* parent)
 {
   if (parent->objectName().isEmpty())
@@ -63,15 +62,14 @@ void TreeEditor<T>::setupUi(QWidget* parent)
   QMetaObject::connectSlotsByName(parent);
 }
 
-template<typename T>
-QWidget* TreeEditor<T>::createEditor(const T& msg,
-                                     const QString& name)
+template <typename T>
+QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
 {
   widget_ = new QWidget();
   setupUi(widget_);
 
   model_ = new QStandardItemModel();
-  model_->setHorizontalHeaderLabels({"Name", "Type"});
+  model_->setHorizontalHeaderLabels({ "Name", "Type" });
   QStandardItem* item = model_->invisibleRootItem();
   Property<T>::template encode<Component>(msg, name, item);
 
@@ -86,26 +84,27 @@ QWidget* TreeEditor<T>::createEditor(const T& msg,
 
   property_view_->setItemDelegate(new PropertyDelegate());
 
-  QApplication::connect(component_view_, &QTreeView::clicked, std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
-  QApplication::connect(component_view_, &QTreeView::customContextMenuRequested, std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
+  QApplication::connect(component_view_, &QTreeView::clicked,
+                        std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
+  QApplication::connect(component_view_, &QTreeView::customContextMenuRequested,
+                        std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
 
   return widget_;
 }
 
-template<typename T>
+template <typename T>
 void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
 {
-
   const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
   QModelIndex sibling = index.sibling(index.row(), 0);
-  if(sibling.isValid())
+  if (sibling.isValid())
   {
     /* Note:
      * When working with the QStandardDataModel, using QModelIndex::internalPointer() to get the pointer
      * of an item will not work correctly. Use QStandardModel::itemFromIndex instead
      */
     Component* prop = static_cast<Component*>(model->itemFromIndex(sibling));
-    if(prop)
+    if (prop)
     {
       property_view_->setModel(prop->getPropertyModel());
       property_view_->expandAll();
@@ -117,22 +116,22 @@ void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
   }
 }
 
-template<typename T>
+template <typename T>
 bool TreeEditor<T>::get(T& msg)
 {
   return Property<T>::decode(static_cast<Component*>(model_->item(0, 0)), msg);
 }
 
-template<typename T>
+template <typename T>
 void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
 {
   QModelIndex index = component_view_->indexAt(point);
-  if(index.isValid())
+  if (index.isValid())
   {
     const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
     Component* item = static_cast<Component*>(model->itemFromIndex(index));
     QMenu* menu = item->getContextMenu(index);
-    if(menu)
+    if (menu)
     {
       menu->exec(component_view_->viewport()->mapToGlobal(point));
     }
@@ -140,6 +139,6 @@ void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
   }
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_TREE_EDITOR_HPP
+#endif  // QT_TREE_EDITOR_TREE_EDITOR_HPP

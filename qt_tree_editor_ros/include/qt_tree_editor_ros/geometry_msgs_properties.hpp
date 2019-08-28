@@ -7,14 +7,11 @@
 
 namespace qt_tree_editor
 {
-
-template<>
+template <>
 struct Property<geometry_msgs::Quaternion>
 {
-  template<typename ComponentT>
-  static void encode(const geometry_msgs::Quaternion& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const geometry_msgs::Quaternion& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
@@ -29,12 +26,11 @@ struct Property<geometry_msgs::Quaternion>
     q_item->addProperty("qz", QVariant(QVariant::Double, &msg.z));
   }
 
-  static bool decode(const Component* item,
-                     geometry_msgs::Quaternion& msg)
+  static bool decode(const Component* item, geometry_msgs::Quaternion& msg)
   {
     const QStandardItemModel* model = item->getPropertyModel();
 
-    if(model->rowCount() == 4)
+    if (model->rowCount() == 4)
     {
       bool w, x, y, z;
       msg.w = model->data(model->index(0, 1)).toDouble(&w);
@@ -51,13 +47,11 @@ struct Property<geometry_msgs::Quaternion>
   }
 };
 
-template<>
+template <>
 struct Property<geometry_msgs::Point>
 {
-  template<typename ComponentT>
-  static void encode(const geometry_msgs::Point& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const geometry_msgs::Point& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
@@ -71,12 +65,11 @@ struct Property<geometry_msgs::Point>
     q_item->addProperty("z", QVariant(QVariant::Double, &msg.z));
   }
 
-  static bool decode(const Component* item,
-                     geometry_msgs::Point& msg)
+  static bool decode(const Component* item, geometry_msgs::Point& msg)
   {
     const QStandardItemModel* model = item->getPropertyModel();
 
-    if(model->rowCount() == 3)
+    if (model->rowCount() == 3)
     {
       bool x, y, z;
       msg.x = model->data(model->index(0, 1)).toDouble(&x);
@@ -92,13 +85,11 @@ struct Property<geometry_msgs::Point>
   }
 };
 
-template<>
+template <>
 struct Property<geometry_msgs::Pose>
 {
-  template<typename ComponentT>
-  static void encode(const geometry_msgs::Pose& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const geometry_msgs::Pose& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
@@ -111,10 +102,9 @@ struct Property<geometry_msgs::Pose>
     Property<geometry_msgs::Quaternion>::encode<Component>(msg.orientation, "orientation", pose_item);
   }
 
-  static bool decode(const Component* item,
-                     geometry_msgs::Pose& msg)
+  static bool decode(const Component* item, geometry_msgs::Pose& msg)
   {
-    if(item->rowCount() == 2)
+    if (item->rowCount() == 2)
     {
       bool point = Property<geometry_msgs::Point>::decode(static_cast<Component*>(item->child(0)), msg.position);
       bool quat = Property<geometry_msgs::Quaternion>::decode(static_cast<Component*>(item->child(1)), msg.orientation);
@@ -128,13 +118,11 @@ struct Property<geometry_msgs::Pose>
   }
 };
 
-template<>
+template <>
 struct Property<geometry_msgs::PoseArray>
 {
-  template<typename ComponentT>
-  static void encode(const geometry_msgs::PoseArray& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const geometry_msgs::PoseArray& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
@@ -147,14 +135,13 @@ struct Property<geometry_msgs::PoseArray>
     Property<std::vector<geometry_msgs::Pose>>::encode(msg.poses, "poses", pose_array_item);
   }
 
-  static bool decode(const Component* item,
-                     geometry_msgs::PoseArray& msg)
+  static bool decode(const Component* item, geometry_msgs::PoseArray& msg)
   {
     bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
     bool poses = Property<std::vector<geometry_msgs::Pose>>::decode(static_cast<Component*>(item->child(1)), msg.poses);
     bool success = poses && header;
 
-    if(!success)
+    if (!success)
     {
       ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
     }
@@ -163,6 +150,6 @@ struct Property<geometry_msgs::PoseArray>
   }
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP
+#endif  // QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP

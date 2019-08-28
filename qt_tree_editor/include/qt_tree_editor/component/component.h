@@ -8,11 +8,9 @@ class QMenu;
 
 namespace qt_tree_editor
 {
-
 class Component : public QStandardItem
 {
-  public:
-
+public:
   explicit Component();
   explicit Component(const QString& text);
 
@@ -24,15 +22,12 @@ class Component : public QStandardItem
 
   virtual QMenu* getContextMenu(const QModelIndex& index);
 
-  void addProperty(const QString& name,
-                   const QVariant& value,
-                   const int role = Qt::EditRole);
+  void addProperty(const QString& name, const QVariant& value, const int role = Qt::EditRole);
 
-  protected:
-
+protected:
   QStandardItemModel* properties_;
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_COMPONENT_H
+#endif  // QT_TREE_EDITOR_COMPONENT_H
