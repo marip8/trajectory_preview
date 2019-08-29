@@ -11,18 +11,15 @@ class QStandardItemModel;
 
 namespace qt_tree_editor
 {
-
-template<typename T>
+template <typename T>
 class TreeEditor
 {
-  public:
-
+public:
   TreeEditor() = default;
 
   virtual ~TreeEditor();
 
-  QWidget* createEditor(const T& msg,
-                        const QString& name);
+  QWidget* createEditor(const T& msg, const QString& name);
 
   bool get(T& msg);
 
@@ -36,8 +33,7 @@ class TreeEditor
     return property_view_;
   }
 
-  private:
-
+private:
   void onTreeSelectionChanged(const QModelIndex& index);
 
   void setupUi(QWidget* parent);
@@ -53,6 +49,6 @@ class TreeEditor
   QStandardItemModel* model_;
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_TREE_EDITOR_H
+#endif  // QT_TREE_EDITOR_TREE_EDITOR_H

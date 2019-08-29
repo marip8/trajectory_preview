@@ -8,14 +8,11 @@
 
 namespace qt_tree_editor
 {
-
-template<>
+template <>
 struct Property<shape_msgs::SolidPrimitive>
 {
-  template<typename ComponentT>
-  static void encode(const shape_msgs::SolidPrimitive& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const shape_msgs::SolidPrimitive& msg, const QString& name, QStandardItem* parent)
   {
     QString datatype(ros::message_traits::datatype(msg));
     parent->appendRow(createPair<ComponentT>(name, datatype));
@@ -25,9 +22,9 @@ struct Property<shape_msgs::SolidPrimitive>
     // Add the child properties
     // Create a map representing the enumeration
     QMap<int, QString> map;
-    map.insert(msg.BOX,"BOX");
+    map.insert(msg.BOX, "BOX");
     map.insert(msg.SPHERE, "SPHERE");
-    map.insert(msg.CYLINDER,"CYLINDER");
+    map.insert(msg.CYLINDER, "CYLINDER");
     map.insert(msg.CONE, "CONE");
 
     // Add the map as data in the enumeration role
@@ -38,7 +35,7 @@ struct Property<shape_msgs::SolidPrimitive>
      */
     QStandardItemModel* model = sp_item->getPropertyModel();
     auto it = map.find(msg.type);
-    if(it != map.end())
+    if (it != map.end())
     {
       model->setData(model->index(0, 1), it.value(), Qt::EditRole);
     }
@@ -48,9 +45,9 @@ struct Property<shape_msgs::SolidPrimitive>
     }
 
     QVariantList list;
-    if(!msg.dimensions.empty())
+    if (!msg.dimensions.empty())
     {
-      for(const shape_msgs::SolidPrimitive::_dimensions_type::value_type& val : msg.dimensions)
+      for (const shape_msgs::SolidPrimitive::_dimensions_type::value_type& val : msg.dimensions)
       {
         list << val;
       }
@@ -62,12 +59,11 @@ struct Property<shape_msgs::SolidPrimitive>
     sp_item->addProperty("dimensions", list, Qt::EditRole);
   }
 
-  static bool decode(const Component* item,
-                     shape_msgs::SolidPrimitive& msg)
+  static bool decode(const Component* item, shape_msgs::SolidPrimitive& msg)
   {
     const QStandardItemModel* model = item->getPropertyModel();
 
-    if(model->rowCount() == 2)
+    if (model->rowCount() == 2)
     {
       // 1. Get the type data
       // 1a. Get the enumeration data
@@ -76,12 +72,12 @@ struct Property<shape_msgs::SolidPrimitive>
       // 1b. Get the current enumeration value
       QVariant enum_value = model->data(model->index(0, 1), Qt::EditRole);
 
-      if(enum_data.isValid() && enum_value.isValid())
+      if (enum_data.isValid() && enum_value.isValid())
       {
         // Get the key associated with the current enumeration value
         QMap<int, QString> map = enum_data.value<QMap<int, QString>>();
         int key = map.key(enum_value.toString(), -1);
-        if(key >= 0)
+        if (key >= 0)
         {
           msg.type = static_cast<shape_msgs::SolidPrimitive::_type_type>(key);
         }
@@ -92,19 +88,19 @@ struct Property<shape_msgs::SolidPrimitive>
 
         // 2. Get the dimension "sub" properties
         const QStandardItem* dimensions = model->item(1);
-        if(dimensions)
+        if (dimensions)
         {
           const int n = dimensions->rowCount();
-          if(n > 0)
+          if (n > 0)
           {
             msg.dimensions.clear();
             msg.dimensions.reserve(n);
 
-            for(int i = 0; i < n; ++i)
+            for (int i = 0; i < n; ++i)
             {
               QStandardItem* dim = dimensions->child(i, 1);
               QVariant var = dim->data(Qt::EditRole);
-              if(var.isValid())
+              if (var.isValid())
               {
                 msg.dimensions.push_back(var.value<shape_msgs::SolidPrimitive::_dimensions_type::value_type>());
               }
@@ -133,6 +129,6 @@ struct Property<shape_msgs::SolidPrimitive>
   }
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_ROS_SHAPE_MSGS_PROPERTIES_HPP
+#endif  // QT_TREE_EDITOR_ROS_SHAPE_MSGS_PROPERTIES_HPP

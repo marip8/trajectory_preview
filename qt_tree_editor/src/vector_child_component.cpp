@@ -8,7 +8,6 @@
 
 namespace qt_tree_editor
 {
-
 QMenu* VectorChildComponent::getContextMenu(const QModelIndex& index)
 {
   QMenu* menu = new QMenu();
@@ -21,13 +20,12 @@ QMenu* VectorChildComponent::getContextMenu(const QModelIndex& index)
   return menu;
 }
 
-void VectorChildComponent::remove(const bool,
-                                  const QModelIndex& index)
+void VectorChildComponent::remove(const bool, const QModelIndex& index)
 {
   parent()->removeRow(index.row());
 
   // Rename the parent's other children
-  for(int i = 0; i < parent()->rowCount(); ++i)
+  for (int i = 0; i < parent()->rowCount(); ++i)
   {
     QStandardItem* child = parent()->child(i, 0);
     std::string name = "[" + std::to_string(i) + "]";
@@ -35,6 +33,6 @@ void VectorChildComponent::remove(const bool,
   }
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // VECTOR_CHILD_COMPONENT_HPP
+#endif  // VECTOR_CHILD_COMPONENT_HPP

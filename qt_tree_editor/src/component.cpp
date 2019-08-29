@@ -7,16 +7,12 @@
 
 namespace qt_tree_editor
 {
-
-Component::Component(const QString& text)
-  : QStandardItem(text)
-  , properties_(new QStandardItemModel())
+Component::Component(const QString& text) : QStandardItem(text), properties_(new QStandardItemModel())
 {
-  properties_->setHorizontalHeaderLabels({"Name", "Value"});
+  properties_->setHorizontalHeaderLabels({ "Name", "Value" });
 }
 
-Component::Component()
-  : Component("")
+Component::Component() : Component("")
 {
 }
 
@@ -25,26 +21,23 @@ Component::~Component()
   delete properties_;
 }
 
-void Component::addProperty(const QString& name,
-                            const QVariant& value,
-                            const int role)
+void Component::addProperty(const QString& name, const QVariant& value, const int role)
 {
   QStandardItem* name_item = new QStandardItem(name);
   name_item->setEditable(false);
 
-  if(value.canConvert<QList<QVariant>>())
+  if (value.canConvert<QList<QVariant>>())
   {
     // Append a "header" row for the list including the values of all
     QStandardItem* header_value = new QStandardItem();
     header_value->setEditable(false);
-    properties_->appendRow({name_item, header_value});
+    properties_->appendRow({ name_item, header_value });
 
     QStandardItem* header = properties_->item(properties_->rowCount() - 1);
 
-
     QVariantList list = value.toList();
     QList<QStandardItem*> items;
-    for(int i = 0; i < list.size(); ++i)
+    for (int i = 0; i < list.size(); ++i)
     {
       std::string name = "[" + std::to_string(i) + "]";
       QStandardItem* tmp_name = new QStandardItem(QString::fromStdString(name));
@@ -52,14 +45,14 @@ void Component::addProperty(const QString& name,
       QStandardItem* item = new QStandardItem();
       item->setData(list[i], role);
 
-      header->appendRow({tmp_name, item});
+      header->appendRow({ tmp_name, item });
     }
   }
   else
   {
     QStandardItem* value_item = new QStandardItem();
     value_item->setData(value, role);
-    properties_->appendRow({name_item, value_item});
+    properties_->appendRow({ name_item, value_item });
   }
 }
 
@@ -78,4 +71,4 @@ QMenu* Component::getContextMenu(const QModelIndex&)
   return nullptr;
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor

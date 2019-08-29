@@ -5,18 +5,15 @@
 
 namespace qt_tree_editor
 {
-
 class ComponentDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
-  public:
+public:
   using QStyledItemDelegate::QStyledItemDelegate;
 
-  virtual void paint(QPainter* painter,
-                     const QStyleOptionViewItem& option,
-                     const QModelIndex& index) const override;
+  virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_COMPONENT_COMPONENT_DELEGATE_H
+#endif  // QT_TREE_EDITOR_COMPONENT_COMPONENT_DELEGATE_H

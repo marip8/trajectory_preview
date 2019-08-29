@@ -8,14 +8,11 @@
 
 namespace qt_tree_editor
 {
-
-template<>
+template <>
 struct Property<std_msgs::Header>
 {
-  template<typename ComponentT>
-  static void encode(const std_msgs::Header& msg,
-                     const QString& name,
-                     QStandardItem* parent)
+  template <typename ComponentT>
+  static void encode(const std_msgs::Header& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
     QString datatype(ros::message_traits::datatype(msg));
@@ -28,12 +25,11 @@ struct Property<std_msgs::Header>
     header_item->addProperty("frame_id", QVariant::fromValue(QString::fromStdString(msg.frame_id)));
   }
 
-  static bool decode(const Component* item,
-                     std_msgs::Header& msg)
+  static bool decode(const Component* item, std_msgs::Header& msg)
   {
     const QStandardItemModel* model = item->getPropertyModel();
 
-    if(model->rowCount() == 2)
+    if (model->rowCount() == 2)
     {
       bool seq;
       msg.seq = model->data(model->index(0, 1)).toDouble(&seq);
@@ -48,6 +44,6 @@ struct Property<std_msgs::Header>
   }
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP
+#endif  // QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP

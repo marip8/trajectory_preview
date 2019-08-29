@@ -3,10 +3,7 @@
 
 namespace qt_tree_editor
 {
-
-void ComponentDelegate::paint(QPainter* painter,
-                              const QStyleOptionViewItem& option,
-                              const QModelIndex& index) const
+void ComponentDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   QStyledItemDelegate::paint(painter, option, index);
 
@@ -23,4 +20,4 @@ void ComponentDelegate::paint(QPainter* painter,
   painter->restore();
 }
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
