@@ -34,7 +34,7 @@ public:
   }
 
 private:
-  void onTreeSelectionChanged(const QModelIndex& index);
+  void onTreeSelectionChanged(const QModelIndex& index, const QModelIndex& previous);
 
   void setupUi(QWidget* parent);
 
