@@ -84,8 +84,9 @@ QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
 
   property_view_->setItemDelegate(new PropertyDelegate());
 
-  QApplication::connect(component_view_, &QTreeView::clicked,
-                        std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1));
+  QApplication::connect(
+      component_view_->selectionModel(), &QItemSelectionModel::currentChanged,
+      std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1, std::placeholders::_2));
   QApplication::connect(component_view_, &QTreeView::customContextMenuRequested,
                         std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
 
@@ -93,7 +94,7 @@ QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
 }
 
 template <typename T>
-void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index)
+void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index, const QModelIndex& previous)
 {
   const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
   QModelIndex sibling = index.sibling(index.row(), 0);
