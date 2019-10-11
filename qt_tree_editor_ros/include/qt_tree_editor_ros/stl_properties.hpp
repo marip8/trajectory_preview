@@ -13,6 +13,7 @@ namespace qt_tree_editor
 template <typename T>
 struct Property<std::vector<T>>
 {
+  template<typename ComponentT = Component>
   static void encode(const std::vector<T>& vec, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
