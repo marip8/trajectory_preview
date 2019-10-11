@@ -137,13 +137,17 @@ struct Property<geometry_msgs::PoseArray>
 
   static bool decode(const Component* item, geometry_msgs::PoseArray& msg)
   {
-    bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
-    bool poses = Property<std::vector<geometry_msgs::Pose>>::decode(static_cast<Component*>(item->child(1)), msg.poses);
-    bool success = poses && header;
+    bool success = false;
+    if(item->rowCount() == 2)
+    {
+      bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
+      bool poses = Property<std::vector<geometry_msgs::Pose>>::decode(static_cast<Component*>(item->child(1)), msg.poses);
+      success = poses && header;
+    }
 
     if (!success)
     {
-      ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
+      ROS_ERROR_STREAM("Failed to decode " << ros::message_traits::datatype(msg));
     }
 
     return success;
