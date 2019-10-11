@@ -15,5 +15,7 @@
   <depend>shape_msgs</depend>
   <depend>std_msgs</depend>
   <depend>qt_tree_editor</depend>
+  <depend>trajectory_msgs</depend>
+  <test_depend>rosunit</test_depend>
 
 </package>
