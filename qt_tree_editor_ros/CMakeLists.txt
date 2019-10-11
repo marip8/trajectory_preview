@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosconsole
   shape_msgs
   std_msgs
+  trajectory_msgs
 )
 
 find_package(qt_tree_editor REQUIRED)
@@ -20,6 +21,7 @@ catkin_package(
     rosconsole
     shape_msgs
     std_msgs
+    trajectory_msgs
 )
 
 ###########
@@ -31,24 +33,23 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_demo
-  src/demo/tree_editor_demo.cpp
-)
-target_link_libraries(${PROJECT_NAME}_demo
-  ${catkin_LIBRARIES}
-  qt_tree_editor::qt_tree_editor
-)
-
 #############
 ## Install ##
 #############
 
-install(TARGETS ${PROJECT_NAME}_demo
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
+
+#############
+## Testing ##
+#############
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  catkin_add_gtest(${PROJECT_NAME}_test test/utest.cpp)
+  target_link_libraries(${PROJECT_NAME}_test
+    qt_tree_editor::qt_tree_editor
+    ${catkin_LIBRARIES}
+  )
+endif()
