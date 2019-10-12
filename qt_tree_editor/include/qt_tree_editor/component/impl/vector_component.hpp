@@ -1,6 +1,6 @@
 #include "qt_tree_editor/component/vector_component.h"
 #include "qt_tree_editor/component/vector_child_component.h"
-#include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/property/property.hpp"
 #include <QMenu>
 #include <QApplication>
 #include <functional>

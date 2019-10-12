@@ -1,5 +1,5 @@
-#ifndef QT_TREE_EDITOR_PROPERTY_H
-#define QT_TREE_EDITOR_PROPERTY_H
+#ifndef QT_TREE_EDITOR_PROPERTY_HPP
+#define QT_TREE_EDITOR_PROPERTY_HPP
 
 #include <QList>
 #include <QStandardItem>
@@ -49,4 +49,4 @@ struct Property
 
 }  // namespace qt_tree_editor
 
-#endif  // QT_TREE_EDITOR_PROPERTY_H
+#endif  // QT_TREE_EDITOR_PROPERTY_HPP
