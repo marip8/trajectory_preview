@@ -1,25 +1,36 @@
-#ifndef QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP
-#define QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP
+#ifndef QT_TREE_EDITOR_PROPERTY_VECTOR_PROPERTY_HPP
+#define QT_TREE_EDITOR_PROPERTY_VECTOR_PROPERTY_HPP
 
-#include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/property/property.hpp"
 #include "qt_tree_editor/component/impl/vector_component.hpp"
 #include "qt_tree_editor/component/vector_child_component.h"
-#include <ros/console.h>
-#include <sstream>
 #include <vector>
 
 namespace qt_tree_editor
 {
+/**
+ * @brief Property struct specialization for encoding and decoding a vector of values into an tree hierarchy.
+ */
 template <typename T>
 struct Property<std::vector<T>>
 {
-  template<typename ComponentT = Component>
+  /**
+   * @ brief Specialization of the property encode function that allows the user to select whether or not the
+   * vector tree is dynamically editable
+   */
+  template<typename ComponentT, bool editable = true>
   static void encode(const std::vector<T>& vec, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
-    QString datatype("vector");
-    using VectorT = std::vector<T>;
-    parent->appendRow(createPair<VectorComponent<VectorT>>(name, datatype));
+    if (editable)
+    {
+      using VectorT = std::vector<T>;
+      parent->appendRow(createPair<VectorComponent<VectorT>>(name, "dynamic_vector"));
+    }
+    else
+    {
+      parent->appendRow(createPair<ComponentT>(name, "static_vector"));
+    }
 
     Component* item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
@@ -46,10 +57,54 @@ struct Property<std::vector<T>>
       {
         success &= Property<T>::decode(static_cast<Component*>(item->child(i)), vec[i]);
       }
+    }
 
-      if (!success)
+    return success;
+  }
+};
+template <typename T>
+using VectorTreeProperty = Property<std::vector<T>>;
+
+/**
+ * @brief Property struct specialization for encoding and decoding a vector of values into a static
+ * table of values. These values and their hierarchy are not editable by the user
+ */
+template <typename T>
+struct VectorTableProperty : public Property<std::vector<T>>
+{
+  template <typename ComponentT = Component>
+  static void encode(const std::vector<T>& vec, const QString& name, QStandardItem* parent)
+  {
+    // Add the top-level item
+    QString datatype("table_vector");
+    parent->appendRow(createPair<ComponentT>(name, datatype));
+
+    Component* item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
+
+    // Add the child properties
+    if (!vec.empty())
+    {
+      for (std::size_t i = 0; i < vec.size(); ++i)
       {
-        ROS_ERROR_STREAM("Failed to decode vector");
+        QString name = QString::fromStdString("[" + std::to_string(i) + "]");
+        item->addProperty(name, QVariant::fromValue(vec[i]));
+      }
+    }
+  }
+
+  static bool decode(const Component* item, std::vector<T>& vec)
+  {
+    const QStandardItemModel* model = item->getPropertyModel();
+
+    bool success = true;
+
+    vec.clear();
+    if (model->rowCount() > 0)
+    {
+      vec.resize(model->rowCount());
+      for (std::size_t i = 0; i < vec.size(); ++i)
+      {
+        vec[i] = model->data(model->index(i, 1)).value<T>();
       }
     }
 
@@ -59,4 +114,4 @@ struct Property<std::vector<T>>
 
 }  // namespace qt_tree_editor
 
-#endif  // QT_TREE_EDITOR_ROS_STL_PROPERTIES_HPP
+#endif  // QT_TREE_EDITOR_PROPERTY_VECTOR_PROPERTY_HPP
