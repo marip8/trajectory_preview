@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_ROS_GEOMETRY_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor_ros/stl_properties.hpp"
+#include "qt_tree_editor/property/vector_property.hpp"
 #include "qt_tree_editor_ros/std_msgs_properties.hpp"
 #include <geometry_msgs/PoseArray.h>
 
@@ -132,7 +132,7 @@ struct Property<geometry_msgs::PoseArray>
 
     // Add the child properties
     Property<std_msgs::Header>::encode<Component>(msg.header, "header", pose_array_item);
-    Property<std::vector<geometry_msgs::Pose>>::encode(msg.poses, "poses", pose_array_item);
+    VectorTreeProperty<geometry_msgs::Pose>::encode<Component>(msg.poses, "poses", pose_array_item);
   }
 
   static bool decode(const Component* item, geometry_msgs::PoseArray& msg)
@@ -141,7 +141,7 @@ struct Property<geometry_msgs::PoseArray>
     if(item->rowCount() == 2)
     {
       bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
-      bool poses = Property<std::vector<geometry_msgs::Pose>>::decode(static_cast<Component*>(item->child(1)), msg.poses);
+      bool poses = VectorTreeProperty<geometry_msgs::Pose>::decode(static_cast<Component*>(item->child(1)), msg.poses);
       success = poses && header;
     }
 

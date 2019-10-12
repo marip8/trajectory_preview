@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_ROS_STD_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/property/property.hpp"
 #include <std_msgs/Header.h>
 #include <ros/console.h>
 #include "qt_tree_editor/user_roles.h"
