@@ -2,7 +2,7 @@
 #define QT_TREE_EDITOR_TREE_EDITOR_HPP
 
 #include "qt_tree_editor/property/property_delegate.h"
-#include "qt_tree_editor/property/property.h"
+#include "qt_tree_editor/property/property.hpp"
 #include "qt_tree_editor/component/component_delegate.h"
 #include "qt_tree_editor/tree_editor.h"
 

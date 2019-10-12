@@ -1,7 +1,7 @@
 #ifndef QT_TREE_EDITOR_ROS_TRAJECTORY_MSGS_PROPERTIES_HPP
 #define QT_TREE_EDITOR_ROS_TRAJECTORY_MSGS_PROPERTIES_HPP
 
-#include "qt_tree_editor_ros/stl_properties.hpp"
+#include "qt_tree_editor/property/vector_property.hpp"
 #include "qt_tree_editor_ros/std_msgs_properties.hpp"
 #include <trajectory_msgs/JointTrajectory.h>
 
@@ -46,10 +46,10 @@ struct Property<trajectory_msgs::JointTrajectoryPoint>
     Component* q_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
 
     // Add the child properties
-    Property<std::vector<double>>::encode(msg.positions, "positions", q_item);
-    Property<std::vector<double>>::encode(msg.velocities, "velocities", q_item);
-    Property<std::vector<double>>::encode(msg.accelerations, "accelerations", q_item);
-    Property<std::vector<double>>::encode(msg.effort, "effort", q_item);
+    VectorTableProperty<double>::encode(msg.positions, "positions", q_item);
+    VectorTableProperty<double>::encode(msg.velocities, "velocities", q_item);
+    VectorTableProperty<double>::encode(msg.accelerations, "accelerations", q_item);
+    VectorTableProperty<double>::encode(msg.effort, "effort", q_item);
     Property<ros::Duration>::encode<Component>(msg.time_from_start, "time_from_start", q_item);
   }
 
@@ -59,10 +59,10 @@ struct Property<trajectory_msgs::JointTrajectoryPoint>
     if (item->rowCount() == 5)
     {
       success = true;
-      success &= Property<std::vector<double>>::decode(static_cast<Component*>(item->child(0)), msg.positions);
-      success &= Property<std::vector<double>>::decode(static_cast<Component*>(item->child(1)), msg.velocities);
-      success &= Property<std::vector<double>>::decode(static_cast<Component*>(item->child(2)), msg.accelerations);
-      success &= Property<std::vector<double>>::decode(static_cast<Component*>(item->child(3)), msg.effort);
+      success &= VectorTableProperty<double>::decode(static_cast<Component*>(item->child(0)), msg.positions);
+      success &= VectorTableProperty<double>::decode(static_cast<Component*>(item->child(1)), msg.velocities);
+      success &= VectorTableProperty<double>::decode(static_cast<Component*>(item->child(2)), msg.accelerations);
+      success &= VectorTableProperty<double>::decode(static_cast<Component*>(item->child(3)), msg.effort);
       success &= Property<ros::Duration>::decode(static_cast<Component*>(item->child(4)), msg.time_from_start);
     }
 
@@ -89,8 +89,8 @@ struct Property<trajectory_msgs::JointTrajectory>
 
     // Add the child properties
     Property<std_msgs::Header>::encode<Component>(msg.header, "header", q_item);
-    Property<std::vector<QString>>::encode(toQStringVector(msg.joint_names), "joint_names", q_item);
-    Property<std::vector<trajectory_msgs::JointTrajectoryPoint>>::encode(msg.points, "points", q_item);
+    VectorTableProperty<QString>::encode(toQStringVector(msg.joint_names), "joint_names", q_item);
+    VectorTreeProperty<trajectory_msgs::JointTrajectoryPoint>::encode<Component, false>(msg.points, "points", q_item);
   }
 
   static bool decode(const Component* item, trajectory_msgs::JointTrajectory& msg)
@@ -102,10 +102,10 @@ struct Property<trajectory_msgs::JointTrajectory>
       success &= Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
 
       std::vector<QString> v_qstring;
-      success &= Property<std::vector<QString>>::decode(static_cast<Component*>(item->child(1)), v_qstring);
+      success &= VectorTableProperty<QString>::decode(static_cast<Component*>(item->child(1)), v_qstring);
       msg.joint_names = fromQStringVector(v_qstring);
 
-      success &= Property<std::vector<trajectory_msgs::JointTrajectoryPoint>>::decode(
+      success &= VectorTreeProperty<trajectory_msgs::JointTrajectoryPoint>::decode(
           static_cast<Component*>(item->child(2)), msg.points);
     }
 
