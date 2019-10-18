@@ -1,3 +1,6 @@
+#ifndef QT_TREE_EDITOR_COMPONENT_IMPL_VECTOR_COMPONENT_H
+#define QT_TREE_EDITOR_COMPONENT_IMPL_VECTOR_COMPONENT_H
+
 #include "qt_tree_editor/component/vector_component.h"
 #include "qt_tree_editor/component/vector_child_component.h"
 #include "qt_tree_editor/property/property.hpp"
@@ -41,3 +44,5 @@ void VectorComponent<T>::addChild(const bool)
 }
 
 }  // namespace qt_tree_editor
+
+#endif // QT_TREE_EDITOR_COMPONENT_IMPL_VECTOR_COMPONENT_H
