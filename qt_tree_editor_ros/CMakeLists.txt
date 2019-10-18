@@ -45,11 +45,14 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-  catkin_add_gtest(${PROJECT_NAME}_test test/utest.cpp)
+if(${CATKIN_ENABLE_TESTING})
+  find_package(GTest REQUIRED)
+  add_executable(${PROJECT_NAME}_test test/utest.cpp)
   target_link_libraries(${PROJECT_NAME}_test
+    GTest::GTest
+    GTest::Main
     qt_tree_editor::qt_tree_editor
     ${catkin_LIBRARIES}
   )
+  gtest_add_tests(${PROJECT_NAME}_test "" AUTO)
 endif()
