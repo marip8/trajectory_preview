@@ -1,0 +1,43 @@
+image: docker:git
+variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+
+services:
+    - docker:dind
+
+before_script:
+    - apk update && apk add --no-cache wget git openssh-client bash coreutils tar openssh
+    - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci .industrial_ci
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+stages:
+    - all
+
+clang_format:
+    stage: all
+    allow_failure: true
+    tags:
+        - docker-docker
+    variables:
+        ROS_DISTRO: melodic
+        CLANG_FORMAT_VERSION: "3.9"
+        CLANG_FORMAT_CHECK: "file"
+    script:
+        - .industrial_ci/gitlab.sh
+    only:
+        - merge_requests
+        - master
+
+melodic:
+    stage: all
+    tags:
+        - docker-docker
+    variables:
+        ROS_DISTRO: melodic
+        ADDITIONAL_DEBS: qt5-default
+    script:
+        - .industrial_ci/gitlab.sh
+    only:
+        - merge_requests
+        - master
