@@ -16,7 +16,4 @@
   <depend>std_msgs</depend>
   <depend>qt_tree_editor</depend>
   <depend>trajectory_msgs</depend>
-  <test_depend>libgtest</test_depend>
-  <test_depend>libgtest_main</test_depend>
-
 </package>
