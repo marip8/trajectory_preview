@@ -28,7 +28,17 @@ QWidget* PropertyDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
     return file_dialog;
   }
 
-  return QStyledItemDelegate::createEditor(parent, option, index);
+  // Generate the editor widget using the base class method
+  QWidget* widget = QStyledItemDelegate::createEditor(parent, option, index);
+
+  // If the generated widget is a double spin box, increase the decimal precision
+  if(widget->metaObject()->className() == QDoubleSpinBox::staticMetaObject.className())
+  {
+    QDoubleSpinBox* dsb = qobject_cast<QDoubleSpinBox*>(widget);
+    dsb->setDecimals(6);
+  }
+
+  return widget;
 }
 
 void PropertyDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
