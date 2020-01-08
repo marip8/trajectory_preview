@@ -7,6 +7,7 @@ class QFrame;
 class QTreeView;
 class QVBoxLayout;
 class QWidget;
+class QStandardItem;
 class QStandardItemModel;
 
 namespace qt_tree_editor
@@ -39,6 +40,12 @@ private:
   void setupUi(QWidget* parent);
 
   void onCustomContextMenu(const QPoint& point);
+
+  void updateVectorParentName(QStandardItem* item);
+  void updateVectorElementNames(QStandardItem* item);
+
+  void onRowsRemoved(const QModelIndex& parent, int, int);
+  void onRowsInserted(const QModelIndex& parent, int, int);
 
   QVBoxLayout* vertical_layout_;
   QTreeView* component_view_;

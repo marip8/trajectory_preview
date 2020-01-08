@@ -25,11 +25,13 @@ struct Property<std::vector<T>>
     if (editable)
     {
       using VectorT = std::vector<T>;
-      parent->appendRow(createPair<VectorComponent<VectorT>>(name, "dynamic_vector"));
+      std::string label = "dynamic_vector [" + std::to_string(vec.size()) + "]";
+      parent->appendRow(createPair<VectorComponent<VectorT>>(name, QString::fromStdString(label)));
     }
     else
     {
-      parent->appendRow(createPair<ComponentT>(name, "static_vector"));
+      std::string label = "static_vector [" + std::to_string(vec.size()) + "]";
+      parent->appendRow(createPair<ComponentT>(name, QString::fromStdString(label)));
     }
 
     Component* item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
@@ -39,8 +41,8 @@ struct Property<std::vector<T>>
     {
       for (std::size_t i = 0; i < vec.size(); ++i)
       {
-        QString name = QString::fromStdString("[" + std::to_string(i) + "]");
-        Property<T>::template encode<VectorChildComponent>(vec[i], name, item);
+        QString label = QString::fromStdString("[" + std::to_string(i) + "]");
+        Property<T>::template encode<VectorChildComponent>(vec[i], label, item);
       }
     }
   }
