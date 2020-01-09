@@ -17,6 +17,8 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenu>
 
+#include <regex>
+
 namespace qt_tree_editor
 {
 template <typename T>
@@ -76,7 +78,6 @@ QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
   component_view_->setModel(model_);
   component_view_->setContextMenuPolicy(Qt::CustomContextMenu);
   component_view_->setItemDelegate(new ComponentDelegate());
-  component_view_->expandAll();
   for (int i = 0; i < model_->columnCount(); ++i)
   {
     component_view_->resizeColumnToContents(i);
@@ -87,14 +88,23 @@ QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
   QApplication::connect(
       component_view_->selectionModel(), &QItemSelectionModel::currentChanged,
       std::bind(&TreeEditor::onTreeSelectionChanged, this, std::placeholders::_1, std::placeholders::_2));
+
   QApplication::connect(component_view_, &QTreeView::customContextMenuRequested,
                         std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
+
+  QApplication::connect(model_, &QStandardItemModel::rowsRemoved,
+                        std::bind(&TreeEditor::onRowsRemoved, this, std::placeholders::_1,
+                                  std::placeholders::_2, std::placeholders::_3));
+
+  QApplication::connect(model_, &QStandardItemModel::rowsInserted,
+                        std::bind(&TreeEditor::onRowsInserted, this, std::placeholders::_1,
+                                  std::placeholders::_2, std::placeholders::_3));
 
   return widget_;
 }
 
 template <typename T>
-void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index, const QModelIndex& previous)
+void TreeEditor<T>::onTreeSelectionChanged(const QModelIndex& index, const QModelIndex&)
 {
   const QStandardItemModel* model = static_cast<const QStandardItemModel*>(index.model());
   QModelIndex sibling = index.sibling(index.row(), 0);
@@ -137,6 +147,59 @@ void TreeEditor<T>::onCustomContextMenu(const QPoint& point)
       menu->exec(component_view_->viewport()->mapToGlobal(point));
     }
     delete menu;
+  }
+}
+
+template <typename T>
+void TreeEditor<T>::updateVectorParentName(QStandardItem* parent_item)
+{
+  // Get the sibling item next to the input parent item. This item has the description of the vector
+  QModelIndex sibling_index = parent_item->model()->sibling(parent_item->row(), parent_item->column() + 1, parent_item->index());
+  QStandardItem* item = parent_item->model()->itemFromIndex(sibling_index);
+  if(item)
+  {
+    // The vector description should be in the format <static/dynamic>_vector[<count>]
+    // Replace the count
+    const std::regex re("\\[(\\d*)\\]");
+    const std::string current_name = item->data(Qt::DisplayRole).toString().toStdString();
+    const std::string new_name =
+        std::regex_replace(current_name, re, "[" + std::to_string(parent_item->rowCount()) + "]");
+    item->setData(QString::fromStdString(new_name), Qt::DisplayRole);
+  }
+}
+
+template <typename T>
+void TreeEditor<T>::updateVectorElementNames(QStandardItem* parent_item)
+{
+  updateVectorParentName(parent_item);
+
+  // Rename the parent's other children
+  for (int i = 0; i < parent_item->rowCount(); ++i)
+  {
+    QStandardItem* child = parent_item->child(i, 0);
+    std::string name = "[" + std::to_string(i) + "]";
+    child->setText(QString::fromStdString(name));
+  }
+}
+
+template <typename T>
+void TreeEditor<T>::onRowsRemoved(const QModelIndex& parent, int, int)
+
+{
+  QStandardItem* parent_item = model_->itemFromIndex(parent);
+  if (parent_item)
+  {
+    updateVectorElementNames(parent_item);
+  }
+}
+
+template <typename T>
+void TreeEditor<T>::onRowsInserted(const QModelIndex& parent, int, int)
+{
+  QStandardItem* parent_item = model_->itemFromIndex(parent);
+  if (parent_item)
+  {
+    updateVectorParentName(parent_item);
   }
 }
 

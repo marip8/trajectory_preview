@@ -24,14 +24,6 @@ void VectorChildComponent::remove(const bool, const QModelIndex& index)
 {
   QStandardItem* parent_item = parent();
   parent_item->removeRow(index.row());
-
-  // Rename the parent's other children
-  for (int i = 0; i < parent_item->rowCount(); ++i)
-  {
-    QStandardItem* child = parent_item->child(i, 0);
-    std::string name = "[" + std::to_string(i) + "]";
-    child->setText(QString::fromStdString(name));
-  }
 }
 
 }  // namespace qt_tree_editor
