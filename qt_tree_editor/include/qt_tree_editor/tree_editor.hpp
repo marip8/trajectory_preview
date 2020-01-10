@@ -4,6 +4,7 @@
 #include "qt_tree_editor/property/property_delegate.h"
 #include "qt_tree_editor/property/property.hpp"
 #include "qt_tree_editor/component/component_delegate.h"
+#include "qt_tree_editor/component/vector_child_component.h"
 #include "qt_tree_editor/tree_editor.h"
 
 #include <QStandardItemModel>
@@ -176,9 +177,13 @@ void TreeEditor<T>::updateVectorElementNames(QStandardItem* parent_item)
   // Rename the parent's other children
   for (int i = 0; i < parent_item->rowCount(); ++i)
   {
-    QStandardItem* child = parent_item->child(i, 0);
-    std::string name = "[" + std::to_string(i) + "]";
-    child->setText(QString::fromStdString(name));
+    // We only want to rename vector child components, so dynamic cast to that type and check if it worked
+    VectorChildComponent* child = dynamic_cast<VectorChildComponent*>(parent_item->child(i, 0));
+    if(child)
+    {
+      std::string name = "[" + std::to_string(i) + "]";
+      child->setText(QString::fromStdString(name));
+    }
   }
 }
 
