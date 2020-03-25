@@ -4,9 +4,48 @@
 #include "qt_tree_editor/property/vector_property.hpp"
 #include "qt_tree_editor_ros/std_msgs_properties.hpp"
 #include <geometry_msgs/PoseArray.h>
+#include <geometry_msgs/Vector3.h>
 
 namespace qt_tree_editor
 {
+template <>
+struct Property<geometry_msgs::Vector3>
+{
+  template <typename ComponentT>
+  static void encode(const geometry_msgs::Vector3& msg, const QString& name, QStandardItem* parent)
+  {
+    // Add the top-level item
+    QString datatype(ros::message_traits::datatype(msg));
+    parent->appendRow(createPair<ComponentT>(name, datatype));
+
+    Component* q_item = static_cast<Component*>(parent->child(parent->rowCount() - 1));
+
+    // Add the child properties
+    q_item->addProperty("x", QVariant(QVariant::Double, &msg.x));
+    q_item->addProperty("y", QVariant(QVariant::Double, &msg.y));
+    q_item->addProperty("z", QVariant(QVariant::Double, &msg.z));
+  }
+
+  static bool decode(const Component* item, geometry_msgs::Vector3& msg)
+  {
+    const QStandardItemModel* model = item->getPropertyModel();
+
+    if (model->rowCount() == 3)
+    {
+      bool x, y, z;
+      msg.x = model->data(model->index(0, 1)).toDouble(&x);
+      msg.y = model->data(model->index(1, 1)).toDouble(&y);
+      msg.z = model->data(model->index(2, 1)).toDouble(&z);
+
+      return x && y && z;
+    }
+
+    ROS_ERROR_STREAM("Failed to decode '" << ros::message_traits::datatype(msg) << "'");
+
+    return false;
+  }
+};
+
 template <>
 struct Property<geometry_msgs::Quaternion>
 {
@@ -41,7 +80,7 @@ struct Property<geometry_msgs::Quaternion>
       return w && x && y && z;
     }
 
-    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
+    ROS_ERROR_STREAM("Failed to decode '" << ros::message_traits::datatype(msg) << "'");
 
     return false;
   }
@@ -79,7 +118,7 @@ struct Property<geometry_msgs::Point>
       return x && y && z;
     }
 
-    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
+    ROS_ERROR_STREAM("Failed to decode '" << ros::message_traits::datatype(msg) << "'");
 
     return false;
   }
@@ -112,7 +151,7 @@ struct Property<geometry_msgs::Pose>
       return point && quat;
     }
 
-    ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
+    ROS_ERROR_STREAM("Failed to decode '" << ros::message_traits::datatype(msg) << "'");
 
     return false;
   }
@@ -147,7 +186,7 @@ struct Property<geometry_msgs::PoseArray>
 
     if (!success)
     {
-      ROS_ERROR_STREAM("Failed to decode " << ros::message_traits::datatype(msg));
+      ROS_ERROR_STREAM("Failed to decode '" << ros::message_traits::datatype(msg) << "'");
     }
 
     return success;
