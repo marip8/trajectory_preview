@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <test test-name="qt_tree_editor_ros_test" pkg="qt_tree_editor_ros" type="qt_tree_editor_ros_test"/>
+</launch>

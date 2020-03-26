@@ -44,4 +44,4 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 ## Testing ##
 #############
-add_subdirectory(test)
+# add_subdirectory(test)
