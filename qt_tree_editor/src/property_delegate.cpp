@@ -1,5 +1,6 @@
 #include "qt_tree_editor/property/property_delegate.h"
 #include <QComboBox>
+#include <QDoubleSpinBox>
 #include <QFileDialog>
 #include <QPainter>
 #include <console_bridge/console.h>
@@ -32,7 +33,7 @@ QWidget* PropertyDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
   QWidget* widget = QStyledItemDelegate::createEditor(parent, option, index);
 
   // If the generated widget is a double spin box, increase the decimal precision
-  if(widget->metaObject()->className() == QDoubleSpinBox::staticMetaObject.className())
+  if (widget->metaObject()->className() == QDoubleSpinBox::staticMetaObject.className())
   {
     QDoubleSpinBox* dsb = qobject_cast<QDoubleSpinBox*>(widget);
     dsb->setDecimals(6);

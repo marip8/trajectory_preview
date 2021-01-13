@@ -107,7 +107,7 @@ struct Property<std_msgs::Header>
 
     success &= Property<ros::Time>::decode(static_cast<Component*>(item->child(0)), msg.stamp);
 
-    if(!success)
+    if (!success)
     {
       ROS_ERROR_STREAM("Failed to decode" << ros::message_traits::datatype(msg));
     }

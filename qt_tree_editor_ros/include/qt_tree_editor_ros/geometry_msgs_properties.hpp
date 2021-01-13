@@ -177,7 +177,7 @@ struct Property<geometry_msgs::PoseArray>
   static bool decode(const Component* item, geometry_msgs::PoseArray& msg)
   {
     bool success = false;
-    if(item->rowCount() == 2)
+    if (item->rowCount() == 2)
     {
       bool header = Property<std_msgs::Header>::decode(static_cast<Component*>(item->child(0)), msg.header);
       bool poses = VectorTreeProperty<geometry_msgs::Pose>::decode(static_cast<Component*>(item->child(1)), msg.poses);

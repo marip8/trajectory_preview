@@ -3,7 +3,6 @@
 
 #include "qt_tree_editor/user_roles.h"
 #include <QStyledItemDelegate>
-#include <QDoubleSpinBox>
 
 namespace qt_tree_editor
 {
