@@ -16,7 +16,7 @@ stages:
 
 clang_format:
     stage: all
-    allow_failure: true
+    allow_failure: false
     tags:
         - docker-docker
     variables:
@@ -34,8 +34,26 @@ melodic:
     tags:
         - docker-docker
     variables:
-        ROS_DISTRO: melodic
-        ADDITIONAL_DEBS: qt5-default
+        ROS_DISTRO: 'melodic'
+        DOCKER_IMAGE: 'ros:melodic'
+        UPSTREAM_WORKSPACE: 'dependencies.rosinstall'
+        ADDITIONAL_DEBS: 'qt5-default'
+    script:
+        - .industrial_ci/gitlab.sh
+    only:
+        - merge_requests
+        - master
+
+noetic:
+    stage: all
+    tags:
+        - docker-docker
+    variables:
+        ROS_DISTRO: 'noetic'
+        DOCKER_IMAGE: 'ros:noetic'
+        UPSTREAM_WORKSPACE: 'dependencies.rosinstall'
+        ADDITIONAL_DEBS: 'qt5-default'
+        ROSDEP_SKIP_KEYS: 'cmake_common_scripts'
     script:
         - .industrial_ci/gitlab.sh
     only:

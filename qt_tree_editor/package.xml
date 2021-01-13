@@ -9,6 +9,10 @@
 
   <license>TODO</license>
 
+  <depend>cmake_common_scripts</depend>
+  <depend>libqt5-widgets</depend>
+  <depend>libconsole-bridge-dev</depend>
+
   <export>
     <build_type>cmake</build_type>
   </export>

@@ -22,6 +22,8 @@ catkin_package(
     shape_msgs
     std_msgs
     trajectory_msgs
+  CFG_EXTRAS
+    ${PROJECT_NAME}-extras.cmake
 )
 
 ###########
@@ -39,6 +41,10 @@ include_directories(
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+
+install(DIRECTORY cmake
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
 #############

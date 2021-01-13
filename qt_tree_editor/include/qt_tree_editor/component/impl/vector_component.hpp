@@ -45,4 +45,4 @@ void VectorComponent<T>::addChild(const bool)
 
 }  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_COMPONENT_IMPL_VECTOR_COMPONENT_H
+#endif  // QT_TREE_EDITOR_COMPONENT_IMPL_VECTOR_COMPONENT_H

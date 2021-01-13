@@ -298,7 +298,7 @@ struct Data<trajectory_msgs::JointTrajectory>
   }
 };
 
-} // namespace test
-} // namespace qt_tree_editor_ros
+}  // namespace test
+}  // namespace qt_tree_editor_ros
 
-#endif // QT_TREE_EDITOR_ROS_TEST_DATA_H
+#endif  // QT_TREE_EDITOR_ROS_TEST_DATA_H

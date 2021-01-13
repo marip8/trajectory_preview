@@ -93,13 +93,13 @@ QWidget* TreeEditor<T>::createEditor(const T& msg, const QString& name)
   QApplication::connect(component_view_, &QTreeView::customContextMenuRequested,
                         std::bind(&TreeEditor::onCustomContextMenu, this, std::placeholders::_1));
 
-  QApplication::connect(model_, &QStandardItemModel::rowsRemoved,
-                        std::bind(&TreeEditor::onRowsRemoved, this, std::placeholders::_1,
-                                  std::placeholders::_2, std::placeholders::_3));
+  QApplication::connect(
+      model_, &QStandardItemModel::rowsRemoved,
+      std::bind(&TreeEditor::onRowsRemoved, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
   QApplication::connect(model_, &QStandardItemModel::rowsInserted,
-                        std::bind(&TreeEditor::onRowsInserted, this, std::placeholders::_1,
-                                  std::placeholders::_2, std::placeholders::_3));
+                        std::bind(&TreeEditor::onRowsInserted, this, std::placeholders::_1, std::placeholders::_2,
+                                  std::placeholders::_3));
 
   return widget_;
 }
@@ -155,9 +155,10 @@ template <typename T>
 void TreeEditor<T>::updateVectorParentName(QStandardItem* parent_item)
 {
   // Get the sibling item next to the input parent item. This item has the description of the vector
-  QModelIndex sibling_index = parent_item->model()->sibling(parent_item->row(), parent_item->column() + 1, parent_item->index());
+  QModelIndex sibling_index =
+      parent_item->model()->sibling(parent_item->row(), parent_item->column() + 1, parent_item->index());
   QStandardItem* item = parent_item->model()->itemFromIndex(sibling_index);
-  if(item)
+  if (item)
   {
     // The vector description should be in the format <static/dynamic>_vector[<count>]
     // Replace the count
@@ -179,7 +180,7 @@ void TreeEditor<T>::updateVectorElementNames(QStandardItem* parent_item)
   {
     // We only want to rename vector child components, so dynamic cast to that type and check if it worked
     VectorChildComponent* child = dynamic_cast<VectorChildComponent*>(parent_item->child(i, 0));
-    if(child)
+    if (child)
     {
       std::string name = "[" + std::to_string(i) + "]";
       child->setText(QString::fromStdString(name));

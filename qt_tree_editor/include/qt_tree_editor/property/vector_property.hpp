@@ -18,7 +18,7 @@ struct Property<std::vector<T>>
    * @ brief Specialization of the property encode function that allows the user to select whether or not the
    * vector tree is dynamically editable
    */
-  template<typename ComponentT, bool editable = true>
+  template <typename ComponentT, bool editable = true>
   static void encode(const std::vector<T>& vec, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item

@@ -29,7 +29,7 @@ std::vector<std::string> fromQStringVector(const std::vector<QString>& in)
   return out;
 }
 
-} // namespace anonymous
+}  // namespace
 
 namespace qt_tree_editor
 {
@@ -78,7 +78,7 @@ struct Property<trajectory_msgs::JointTrajectoryPoint>
 template <>
 struct Property<trajectory_msgs::JointTrajectory>
 {
-  template<typename ComponentT>
+  template <typename ComponentT>
   static void encode(const trajectory_msgs::JointTrajectory& msg, const QString& name, QStandardItem* parent)
   {
     // Add the top-level item
@@ -118,6 +118,6 @@ struct Property<trajectory_msgs::JointTrajectory>
   }
 };
 
-} // namespace qt_tree_editor
+}  // namespace qt_tree_editor
 
-#endif // QT_TREE_EDITOR_ROS_TRAJECTORY_MSGS_PROPERTIES_HPP
+#endif  // QT_TREE_EDITOR_ROS_TRAJECTORY_MSGS_PROPERTIES_HPP
